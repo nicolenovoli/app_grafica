@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 
+import '../screens/orders_page.dart';
+
 class CustomBottomNavbar extends StatelessWidget {
   const CustomBottomNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.only(
         left: 24,
         right: 24,
         bottom: 20,
       ),
+
       padding: const EdgeInsets.symmetric(
         vertical: 14,
       ),
+
       decoration: BoxDecoration(
         color: const Color(0xFF0B4D2B),
         borderRadius: BorderRadius.circular(28),
+
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.18),
@@ -25,23 +31,48 @@ class CustomBottomNavbar extends StatelessWidget {
           ),
         ],
       ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+      child: Row(
+        mainAxisAlignment:
+            MainAxisAlignment.spaceAround,
+
         children: [
+
+          // INÍCIO
           _BottomItem(
             icon: Icons.home_outlined,
             label: 'INÍCIO',
             ativo: true,
+
+            onTap: () {},
           ),
+
+          // PEDIDOS
           _BottomItem(
             icon: Icons.assignment_outlined,
             label: 'PEDIDOS',
             ativo: false,
+
+            onTap: () {
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      const OrdersPage(),
+                ),
+              );
+
+            },
           ),
+
+          // CARRINHO
           _BottomItem(
             icon: Icons.shopping_bag_outlined,
             label: 'CARRINHO',
             ativo: false,
+
+            onTap: () {},
           ),
         ],
       ),
@@ -50,36 +81,58 @@ class CustomBottomNavbar extends StatelessWidget {
 }
 
 class _BottomItem extends StatelessWidget {
+
   final IconData icon;
   final String label;
   final bool ativo;
+  final VoidCallback onTap;
 
   const _BottomItem({
     required this.icon,
     required this.label,
     required this.ativo,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: ativo ? Colors.white : Colors.white54,
-          size: 24,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: ativo ? Colors.white : Colors.white54,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+
+    return GestureDetector(
+
+      onTap: onTap,
+
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+
+        children: [
+
+          Icon(
+            icon,
+            color:
+                ativo
+                    ? Colors.white
+                    : Colors.white54,
+
+            size: 24,
           ),
-        ),
-      ],
+
+          const SizedBox(height: 4),
+
+          Text(
+            label,
+
+            style: TextStyle(
+              color:
+                  ativo
+                      ? Colors.white
+                      : Colors.white54,
+
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
