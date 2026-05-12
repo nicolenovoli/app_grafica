@@ -108,24 +108,17 @@ class _BottomItem extends StatelessWidget {
 
           Icon(
             icon,
-            color:
-                ativo
-                    ? Colors.white
-                    : Colors.white54,
+              color: Colors.white,
+  size: 24,
+),
 
-            size: 24,
-          ),
+const SizedBox(height: 4),
 
-          const SizedBox(height: 4),
+Text(
+  label,
 
-          Text(
-            label,
-
-            style: TextStyle(
-              color:
-                  ativo
-                      ? Colors.white
-                      : Colors.white54,
+  style: const TextStyle(
+    color: Colors.white,
 
               fontSize: 12,
               fontWeight: FontWeight.bold,

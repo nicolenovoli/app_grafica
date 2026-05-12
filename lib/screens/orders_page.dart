@@ -54,7 +54,7 @@ class _OrdersPageState extends State<OrdersPage> {
         padding: const EdgeInsets.all(24),
 
         child: pesquisou
-            ? _buildPedidos()
+            ? _buildSemPedidos()
             : _buildIdentificacao(),
       ),
     );
@@ -134,7 +134,7 @@ class _OrdersPageState extends State<OrdersPage> {
                 ],
 
                 decoration: InputDecoration(
-                  hintText: "(DD) 99999-9999",
+                  hintText: "(DD) 9XXXX-YYYY",
 
                   filled: true,
                   fillColor: Colors.white,
@@ -166,6 +166,9 @@ class _OrdersPageState extends State<OrdersPage> {
 
                 setState(() {
 
+                  // futuramente:
+                  // buscar pedidos na API
+
                   pesquisou = true;
 
                 });
@@ -196,174 +199,121 @@ class _OrdersPageState extends State<OrdersPage> {
   }
 
   // ==========================================
-  // COM PEDIDOS
+  // SEM PEDIDOS
   // ==========================================
 
-  Widget _buildPedidos() {
+  Widget _buildSemPedidos() {
 
     return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
-
       children: [
 
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
-
-          children: [
-
-            Text(
-              "1 pedido para ${telefoneController.text}",
-            ),
-
-            TextButton(
-              onPressed: () {
-
-                setState(() {
-
-                  pesquisou = false;
-
-                  telefoneController.clear();
-
-                });
-
-              },
-
-              child: const Text("Trocar"),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 20),
+        const SizedBox(height: 120),
 
         Container(
-          padding: const EdgeInsets.all(20),
+          width: 120,
+          height: 120,
 
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-
-            border: Border.all(
-              color: Colors.grey.shade200,
-            ),
+            color: const Color(0xFFEDE9E3),
+            borderRadius: BorderRadius.circular(60),
           ),
 
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+          child: const Icon(
+            Icons.assignment_outlined,
+            size: 50,
+            color: Color(0xFF5B7B63),
+          ),
+        ),
 
-            children: [
+        const SizedBox(height: 32),
 
-              Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+        const Text(
+          "Nenhum pedido ainda",
 
-                children: [
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
 
-                  Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+        const SizedBox(height: 16),
 
-                    children: const [
+        const Text(
+          "Não encontramos pedidos para este telefone.",
 
-                      Text(
-                        "PEDIDO #0001",
+          textAlign: TextAlign.center,
 
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black54,
+            height: 1.5,
+          ),
+        ),
 
-                      SizedBox(height: 4),
+        const SizedBox(height: 40),
 
-                      Text(
-                        "06 de mai. de 2026, 19:59",
-                      ),
-                    ],
+        Row(
+          children: [
+
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {
+
+                  setState(() {
+
+                    pesquisou = false;
+
+                    telefoneController.clear();
+
+                  });
+
+                },
+
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 58),
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(18),
                   ),
+                ),
 
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
-                    ),
-
-                    decoration: BoxDecoration(
-                      color: const Color(
-                        0xFFE8F0EA,
-                      ),
-
-                      borderRadius:
-                          BorderRadius.circular(
-                        20,
-                      ),
-                    ),
-
-                    child: const Text(
-                      "EM ANDAMENTO",
-
-                      style: TextStyle(
-                        color: Color(0xFF0B4D2B),
-                        fontWeight:
-                            FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              const Text(
-                "1x Pastas Personalizadas",
-
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                child: const Text(
+                  "Trocar telefone",
                 ),
               ),
+            ),
 
-              const SizedBox(height: 6),
+            const SizedBox(width: 16),
 
-              const Text(
-                "50 • Triplex 250g • Verniz total",
-              ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
 
-              const SizedBox(height: 20),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color(0xFF0B4D2B),
 
-              Divider(color: Colors.grey.shade300),
+                  minimumSize: const Size(0, 58),
 
-              const SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-
-                children: const [
-
-                  Text(
-                    "Retirada • 1 item",
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(18),
                   ),
+                ),
 
-                  Text(
-                    "R\$ 320,00",
+                child: const Text(
+                  "Ver catálogo",
 
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight:
-                          FontWeight.bold,
-
-                      color: Color(0xFF0B4D2B),
-                    ),
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
