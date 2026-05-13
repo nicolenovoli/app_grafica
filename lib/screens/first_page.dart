@@ -6,15 +6,24 @@ import '../widgets/secao_produtos.dart';
 import '../widgets/custom_bottom_navbar.dart';
 
 class FirstPage extends StatelessWidget {
+
   const FirstPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return const Scaffold(
+
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 120),
+
+        padding: EdgeInsets.only(
+          bottom: 120,
+        ),
+
         child: Column(
+
           children: [
+
             CustomAppBar(),
 
             SizedBox(height: 20),
@@ -30,7 +39,8 @@ class FirstPage extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: CustomBottomNavbar(),
+      bottomNavigationBar:
+          CustomBottomNavbar(),
     );
   }
 }

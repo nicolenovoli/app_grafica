@@ -25,7 +25,7 @@ class ProdutoDestaque extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                Colors.black.withOpacity(0.7),
+                Colors.white.withValues(alpha: 0.7),
               ],
             ),
           ),

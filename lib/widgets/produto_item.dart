@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/produto_model.dart';
+
+import '../screens/product_details_page.dart';
+
 class ProdutoItem extends StatelessWidget {
+
   final String nome;
   final String descricao;
   final String preco;
@@ -16,84 +21,199 @@ class ProdutoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 22,
-      ),
-      child: Row(
-        children: [
 
-          // IMAGEM
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset(
-              imagem,
-              width: 85,
-              height: 85,
-              fit: BoxFit.cover,
-            ),
+    return Material(
+
+  color: Colors.transparent,
+
+  child: InkWell(
+
+      onTap: () {
+
+
+        String valorLimpo = preco
+
+            .replaceAll(
+              'a partir de R\$ ',
+              '',
+            )
+
+            .replaceAll('.', '')
+
+            .replaceAll(',', '.');
+
+        double valor =
+            double.tryParse(
+                  valorLimpo,
+                ) ??
+                0;
+
+
+        ProdutoModel produto = ProdutoModel(
+
+          id: 1,
+
+          nome: nome,
+
+          descricao: descricao,
+
+          valor: valor,
+
+          imagem: imagem,
+        );
+
+        Navigator.push(
+
+          context,
+
+          MaterialPageRoute(
+
+            builder: (_) =>
+                ProductDetailsPage(
+                  produto: produto,
+                ),
           ),
+        );
+      },
 
-          const SizedBox(width: 16),
+      child: Padding(
 
-          // TEXTO
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        padding: const EdgeInsets.only(
+          bottom: 22,
+        ),
 
-                Text(
-                  nome,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0B4D2B),
-                  ),
-                ),
+        child: Row(
 
-                const SizedBox(height: 4),
+          children: [
 
-                Text(
-                  descricao,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                  ),
-                ),
+            ClipRRect(
 
-                const SizedBox(height: 8),
+              borderRadius:
+                  BorderRadius.circular(
+                20,
+              ),
 
-                Text(
-                  preco,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0B4D2B),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              child: Image.asset(
 
-          const SizedBox(width: 10),
+                imagem,
 
-          // BOTÃO +
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: Colors.grey.shade300,
+                width: 85,
+                height: 85,
+
+                fit: BoxFit.cover,
               ),
             ),
-            child: const Icon(
-              Icons.add,
-              color: Color(0xFF0B4D2B),
+
+            const SizedBox(width: 16),
+
+          
+            // TEXTO
+            Expanded(
+
+              child: Column(
+
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+
+                children: [
+
+                  Text(
+
+                    nome,
+
+                    style:
+                        const TextStyle(
+
+                      fontSize: 22,
+
+                      fontWeight:
+                          FontWeight.bold,
+
+                      color: Color(
+                        0xFF0B4D2B,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 4,
+                  ),
+
+                  Text(
+
+                    descricao,
+
+                    style:
+                        const TextStyle(
+
+                      fontSize: 16,
+
+                      color:
+                          Colors.black54,
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 8,
+                  ),
+
+                  Text(
+
+                    preco,
+
+                    style:
+                        const TextStyle(
+
+                      fontSize: 20,
+
+                      fontWeight:
+                          FontWeight.bold,
+
+                      color: Color(
+                        0xFF0B4D2B,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+
+            const SizedBox(width: 10),
+
+
+            // BOTÃO +
+            Container(
+
+              width: 52,
+              height: 52,
+
+              decoration:
+                  BoxDecoration(
+
+                borderRadius:
+                    BorderRadius.circular(
+                  18,
+                ),
+
+                border: Border.all(
+                  color:
+                      Colors.grey.shade300,
+                ),
+              ),
+
+              child: const Icon(
+
+                Icons.add,
+
+                color: Color(
+                  0xFF0B4D2B,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
+  ),
     );
   }
 }
