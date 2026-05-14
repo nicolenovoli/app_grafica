@@ -1,3 +1,5 @@
+import 'produto_opcao_model.dart';
+
 class ProdutoModel {
 
   final int id;
@@ -6,16 +8,26 @@ class ProdutoModel {
 
   final String descricao;
 
-  final double valor;
+  final double precoBase;
 
   final String imagem;
 
+  final List<ProdutoOpcaoModel>
+      opcoes;
+
   ProdutoModel({
+
     required this.id,
+
     required this.nome,
+
     required this.descricao,
-    required this.valor,
+
+    required this.precoBase,
+
     required this.imagem,
+
+    required this.opcoes,
   });
 
   factory ProdutoModel.fromJson(
@@ -30,9 +42,35 @@ class ProdutoModel {
 
       descricao: json["descricao"],
 
-      valor: json["valor"].toDouble(),
+      precoBase:
 
-      imagem: json["imagem"],
+          (json["preco_base"]
+                  as num)
+              .toDouble(),
+
+      imagem:
+          json["imagem"] ?? "",
+
+      opcoes:
+
+          json["opcoes"] != null
+
+              ? (json["opcoes"]
+                      as List)
+
+                  .map(
+
+                    (opcao) =>
+
+                        ProdutoOpcaoModel
+                            .fromJson(
+                      opcao,
+                    ),
+                  )
+
+                  .toList()
+
+              : [],
     );
   }
 
@@ -46,9 +84,18 @@ class ProdutoModel {
 
       "descricao": descricao,
 
-      "valor": valor,
+      "preco_base":
+          precoBase,
 
       "imagem": imagem,
+
+      "opcoes":
+
+          opcoes.map(
+
+            (opcao) =>
+                opcao.toJson(),
+          ).toList(),
     };
   }
 }

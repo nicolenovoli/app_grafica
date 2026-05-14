@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.asset(
-              'assets/logo.png',
+              "assets/placeholder.png",
               width: 60,
               height: 60,
               fit: BoxFit.cover,

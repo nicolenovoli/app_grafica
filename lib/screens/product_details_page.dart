@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/item_pedido_model.dart';
 import '../models/produto_model.dart';
+import '../models/produto_opcao_model.dart';
 
 import '../providers/carrinho_provider.dart';
 
@@ -25,51 +26,64 @@ class _ProductDetailsPageState
 
   int quantidade = 1;
 
-  // ==========================================
-  // OPÇÕES TEMPORÁRIAS
-  // ==========================================
-
-  final List<Map<String, dynamic>> opcoes = [
-
-    {
-      "titulo": "Papel",
-
-      "valores": [
-        "Triplex 250g",
-        "Couchê 300g",
-      ],
-    },
-
-    {
-      "titulo": "Acabamento",
-
-      "valores": [
-        "Sem verniz",
-        "Verniz total",
-      ],
-    },
-  ];
-
   final Map<String, String>
       opcoesSelecionadas = {};
+
+  Map<String, List<ProdutoOpcaoModel>>
+      opcoesAgrupadas = {};
 
   @override
   void initState() {
 
     super.initState();
 
-    // Seleciona automaticamente
-    // a primeira opção de cada grupo
+    for (var opcao
+        in widget.produto.opcoes) {
 
-    for (var opcao in opcoes) {
+      if (!opcoesAgrupadas.containsKey(
+        opcao.grupo,
+      )) {
 
-      opcoesSelecionadas[
-          opcao["titulo"]] =
+        opcoesAgrupadas[
+            opcao.grupo] = [];
+      }
 
-          (opcao["valores"]
-                  as List<String>)
-              .first;
+      opcoesAgrupadas[
+          opcao.grupo]!.add(opcao);
     }
+
+    opcoesAgrupadas.forEach(
+
+      (grupo, listaOpcoes) {
+
+        opcoesSelecionadas[grupo] =
+            listaOpcoes.first.nome;
+      },
+    );
+  }
+
+  double calcularTotal() {
+
+    double total =
+        widget.produto.precoBase;
+
+    for (var grupo
+        in opcoesAgrupadas.entries) {
+
+      for (var opcao
+          in grupo.value) {
+
+        if (opcoesSelecionadas[
+                grupo.key] ==
+            opcao.nome) {
+
+          total +=
+              opcao.valorAdicional;
+        }
+      }
+    }
+
+    return total * quantidade;
   }
 
   @override
@@ -81,9 +95,7 @@ class _ProductDetailsPageState
       listen: false,
     );
 
-    double total =
-        widget.produto.valor *
-            quantidade;
+    double total = calcularTotal();
 
     return Scaffold(
 
@@ -93,10 +105,6 @@ class _ProductDetailsPageState
       body: Column(
 
         children: [
-
-          // ======================================
-          // CONTEÚDO
-          // ======================================
 
           Expanded(
 
@@ -125,7 +133,8 @@ class _ProductDetailsPageState
                         color: Colors.white,
 
                         child: Image.asset(
-                          widget.produto.imagem,
+
+                          "assets/${widget.produto.imagem}",
 
                           fit: BoxFit.cover,
                         ),
@@ -155,6 +164,7 @@ class _ProductDetailsPageState
 
                               decoration:
                                   BoxDecoration(
+
                                 color:
                                     Colors.white,
 
@@ -175,7 +185,7 @@ class _ProductDetailsPageState
                   ),
 
                   // ======================================
-                  // INFORMAÇÕES
+                  // CONTEÚDO
                   // ======================================
 
                   Padding(
@@ -194,10 +204,12 @@ class _ProductDetailsPageState
                       children: [
 
                         Text(
+
                           widget.produto.nome,
 
                           style:
                               const TextStyle(
+
                             fontSize: 30,
 
                             fontWeight:
@@ -232,11 +244,13 @@ class _ProductDetailsPageState
                         ),
 
                         Text(
+
                           widget.produto
                               .descricao,
 
                           style:
                               const TextStyle(
+
                             fontSize: 16,
 
                             color:
@@ -254,9 +268,9 @@ class _ProductDetailsPageState
                         // OPÇÕES
                         // ======================================
 
-                        ...opcoes.map(
+                        ...opcoesAgrupadas.entries.map(
 
-                          (opcao) {
+                          (entry) {
 
                             return Column(
 
@@ -268,10 +282,11 @@ class _ProductDetailsPageState
 
                                 Text(
 
-                                  opcao["titulo"],
+                                  entry.key,
 
                                   style:
                                       const TextStyle(
+
                                     fontSize: 18,
 
                                     fontWeight:
@@ -291,20 +306,16 @@ class _ProductDetailsPageState
 
                                   children:
 
-                                      (opcao["valores"]
-                                              as List<
-                                                  String>)
-                                          .map(
+                                      entry.value.map(
 
-                                    (valor) {
+                                    (opcao) {
 
                                       bool ativo =
 
                                           opcoesSelecionadas[
-                                                  opcao[
-                                                      "titulo"]] ==
+                                                  entry.key] ==
 
-                                              valor;
+                                              opcao.nome;
 
                                       return GestureDetector(
 
@@ -313,10 +324,9 @@ class _ProductDetailsPageState
                                           setState(() {
 
                                             opcoesSelecionadas[
-                                                    opcao[
-                                                        "titulo"]] =
+                                                    entry.key] =
 
-                                                valor;
+                                                opcao.nome;
                                           });
                                         },
 
@@ -367,7 +377,7 @@ class _ProductDetailsPageState
                                           child:
                                               Text(
 
-                                            valor,
+                                            opcao.nome,
 
                                             style:
                                                 TextStyle(
@@ -428,6 +438,7 @@ class _ProductDetailsPageState
 
                           decoration:
                               BoxDecoration(
+
                             color: Colors.white,
 
                             borderRadius:
@@ -512,7 +523,7 @@ class _ProductDetailsPageState
           ),
 
           // ======================================
-          // BOTÕES
+          // BOTÃO
           // ======================================
 
           Container(
@@ -525,164 +536,91 @@ class _ProductDetailsPageState
               color: Colors.white,
             ),
 
-            child: Column(
+            child: SizedBox(
 
-              children: [
+              width: double.infinity,
+              height: 58,
 
-                SizedBox(
+              child: ElevatedButton(
 
-                  width: double.infinity,
-                  height: 58,
+                onPressed: () {
 
-                  child: ElevatedButton(
+                  carrinhoProvider
+                      .adicionarItem(
 
-                    onPressed: () {
+                    ItemPedidoModel(
 
-                      carrinhoProvider
-                          .adicionarItem(
+                      produtoId:
+                          widget.produto.id,
 
-                        ItemPedidoModel(
+                      quantidade:
+                          quantidade,
 
-                          produtoId:
-                              widget.produto.id,
+                      valorUnitario:
+                          total / quantidade,
 
-                          quantidade:
-                              quantidade,
+                      subtotal:
+                          total,
 
-                          valorUnitario:
-                              widget.produto
-                                  .valor,
+                      observacoes:
+                          opcoesSelecionadas
+                              .toString(),
+                    ),
+                  );
 
-                          subtotal:
-                              widget.produto
-                                      .valor *
-                                  quantidade,
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(
 
-                          observacoes:
-                              opcoesSelecionadas
-                                  .toString(),
-                        ),
-                      );
+                    SnackBar(
 
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(
+                      content: Text(
 
-                        SnackBar(
-
-                          content: Text(
-
-                            "${widget.produto.nome} adicionado ao carrinho",
-                          ),
-                        ),
-                      );
-                    },
-
-                    style:
-                        ElevatedButton.styleFrom(
-
-                      backgroundColor:
-                          const Color(
-                        0xFF0B4D2B,
-                      ),
-
-                      shape:
-                          RoundedRectangleBorder(
-
-                        borderRadius:
-                            BorderRadius.circular(
-                          20,
-                        ),
+                        "${widget.produto.nome} adicionado ao carrinho",
                       ),
                     ),
+                  );
+                },
 
-                    child: const Text(
+                style:
+                    ElevatedButton.styleFrom(
 
-                      "Adicionar ao carrinho",
+                  backgroundColor:
+                      const Color(
+                    0xFF0B4D2B,
+                  ),
 
-                      style: TextStyle(
+                  shape:
+                      RoundedRectangleBorder(
 
-                        fontSize: 18,
-
-                        fontWeight:
-                            FontWeight.bold,
-
-                        color: Colors.white,
-                      ),
+                    borderRadius:
+                        BorderRadius.circular(
+                      20,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 12),
+                child: const Text(
 
-                SizedBox(
+                  "Adicionar ao carrinho",
 
-                  width: double.infinity,
-                  height: 54,
+                  style: TextStyle(
 
-                  child:
-                      OutlinedButton.icon(
+                    fontSize: 18,
 
-                    onPressed: () {
+                    fontWeight:
+                        FontWeight.bold,
 
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(
-
-                        const SnackBar(
-
-                          content: Text(
-                            "Abrir WhatsApp da empresa",
-                          ),
-                        ),
-                      );
-                    },
-
-                    icon: const Icon(
-                      Icons.chat,
-                    ),
-
-                    label: const Text(
-                      "Entrar em contato",
-                    ),
-
-                    style:
-                        OutlinedButton.styleFrom(
-
-                      foregroundColor:
-                          const Color(
-                        0xFF0B4D2B,
-                      ),
-
-                      side:
-                          const BorderSide(
-                        color: Color(
-                          0xFF0B4D2B,
-                        ),
-                      ),
-
-                      shape:
-                          RoundedRectangleBorder(
-
-                        borderRadius:
-                            BorderRadius.circular(
-                          20,
-                        ),
-                      ),
-                    ),
+                    color: Colors.white,
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ],
       ),
     );
   }
-
-  // ==========================================
-  // BOTÃO QUANTIDADE
-  // ==========================================
 
   Widget _botaoQuantidade(
     IconData icon,

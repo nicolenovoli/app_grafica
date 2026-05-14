@@ -4,88 +4,54 @@ import '../models/produto_model.dart';
 
 import '../screens/product_details_page.dart';
 
-class ProdutoItem extends StatelessWidget {
+class ProdutoItem
+    extends StatelessWidget {
 
-  final String nome;
-  final String descricao;
-  final String preco;
-  final String imagem;
+  final ProdutoModel produto;
 
   const ProdutoItem({
+
     super.key,
-    required this.nome,
-    required this.descricao,
-    required this.preco,
-    required this.imagem,
+
+    required this.produto,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    return Material(
+    return Padding(
 
-  color: Colors.transparent,
+      padding: const EdgeInsets.only(
+        bottom: 22,
+      ),
 
-  child: InkWell(
+      child: InkWell(
 
-      onTap: () {
+        borderRadius:
+            BorderRadius.circular(20),
 
+        onTap: () {
 
-        String valorLimpo = preco
+          Navigator.push(
 
-            .replaceAll(
-              'a partir de R\$ ',
-              '',
-            )
+            context,
 
-            .replaceAll('.', '')
+            MaterialPageRoute(
 
-            .replaceAll(',', '.');
+              builder: (_) =>
 
-        double valor =
-            double.tryParse(
-                  valorLimpo,
-                ) ??
-                0;
-
-
-        ProdutoModel produto = ProdutoModel(
-
-          id: 1,
-
-          nome: nome,
-
-          descricao: descricao,
-
-          valor: valor,
-
-          imagem: imagem,
-        );
-
-        Navigator.push(
-
-          context,
-
-          MaterialPageRoute(
-
-            builder: (_) =>
-                ProductDetailsPage(
-                  produto: produto,
-                ),
-          ),
-        );
-      },
-
-      child: Padding(
-
-        padding: const EdgeInsets.only(
-          bottom: 22,
-        ),
+                  ProductDetailsPage(
+                produto: produto,
+              ),
+            ),
+          );
+        },
 
         child: Row(
 
           children: [
 
+            // IMAGEM
             ClipRRect(
 
               borderRadius:
@@ -95,7 +61,7 @@ class ProdutoItem extends StatelessWidget {
 
               child: Image.asset(
 
-                imagem,
+                "assets/placeholder.png",
 
                 width: 85,
                 height: 85,
@@ -106,7 +72,6 @@ class ProdutoItem extends StatelessWidget {
 
             const SizedBox(width: 16),
 
-          
             // TEXTO
             Expanded(
 
@@ -119,7 +84,7 @@ class ProdutoItem extends StatelessWidget {
 
                   Text(
 
-                    nome,
+                    produto.nome,
 
                     style:
                         const TextStyle(
@@ -141,7 +106,7 @@ class ProdutoItem extends StatelessWidget {
 
                   Text(
 
-                    descricao,
+                    produto.descricao,
 
                     style:
                         const TextStyle(
@@ -159,7 +124,7 @@ class ProdutoItem extends StatelessWidget {
 
                   Text(
 
-                    preco,
+                    "R\$ ${produto.precoBase.toStringAsFixed(2).replaceAll(".", ",")}",
 
                     style:
                         const TextStyle(
@@ -179,7 +144,6 @@ class ProdutoItem extends StatelessWidget {
             ),
 
             const SizedBox(width: 10),
-
 
             // BOTÃO +
             Container(
@@ -213,7 +177,6 @@ class ProdutoItem extends StatelessWidget {
           ],
         ),
       ),
-  ),
     );
   }
 }

@@ -12,7 +12,7 @@ class ProdutoDestaque extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(35),
           image: const DecorationImage(
-            image: AssetImage('assets/cartao.png'),
+            image: AssetImage("assets/placeholder.png"),
             fit: BoxFit.cover,
           ),
         ),
