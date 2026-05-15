@@ -7,8 +7,8 @@ import '../models/produto_model.dart';
 
 class ProdutoProvider extends ChangeNotifier {
 
-final String baseUrl =
-    "http://localhost:8000";
+  final String baseUrl =
+      "http://localhost:8000";
 
   bool carregando = false;
 
@@ -16,59 +16,50 @@ final String baseUrl =
 
   ProdutoModel? produto;
 
+  Future<void> listarProdutos() async {
 
-Future<void> listarProdutos()
-async {
+    carregando = true;
 
-  carregando = true;
+    notifyListeners();
 
-  notifyListeners();
+    try {
 
-  try {
+      final response = await http.get(
 
-    final response =
-        await http.get(
+        Uri.parse(
+          "$baseUrl/produtos/",
+        ),
+      );
 
-      Uri.parse(
-        "$baseUrl/produtos/",
-      ),
-    );
+      if (response.statusCode == 200) {
 
-    print(response.body);
+        final data =
+            jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
+        produtos = (data as List)
 
-      final data =
-          jsonDecode(response.body);
+            .map(
 
-      produtos = (data as List)
+              (produto) =>
 
-          .map(
+                  ProdutoModel
+                      .fromJson(
+                produto,
+              ),
+            )
 
-            (produto) =>
+            .toList();
+      }
 
-                ProdutoModel
-                    .fromJson(
-              produto,
-            ),
-          )
+    } catch (e) {
 
-          .toList();
-
-      print(produtos.length);
+      produtos = [];
     }
 
-  } catch (e) {
+    carregando = false;
 
-    print(e);
-
-    produtos = [];
+    notifyListeners();
   }
-
-  carregando = false;
-
-  notifyListeners();
-}
 
   Future<bool> buscarProdutoPorId(
     int produtoId,
@@ -118,14 +109,12 @@ async {
     }
   }
 
-
   void limparProduto() {
 
     produto = null;
 
     notifyListeners();
   }
-
 
   void limparProdutos() {
 

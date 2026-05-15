@@ -12,7 +12,7 @@ class ProdutoDestaque extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(35),
           image: const DecorationImage(
-            image: AssetImage("assets/placeholder.png"),
+            image: AssetImage("assets/cartao.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -60,9 +60,16 @@ class ProdutoDestaque extends StatelessWidget {
                 const Text(
                   'Cartões de Visita',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: const Color(0xFF0B4D2B),
                     fontSize: 34,
                     fontWeight: FontWeight.bold,
+                         shadows: [
+            Shadow(
+              color: Colors.white70,
+              blurRadius: 8,
+              offset: Offset(1, 1),
+            ),
+          ],
                   ),
                 ),
 
@@ -71,8 +78,15 @@ class ProdutoDestaque extends StatelessWidget {
                 const Text(
                   'Impressão profissional, papel premium',
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: Colors.black87,
                     fontSize: 18,
+                    shadows: [
+            Shadow(
+              color: Colors.white60,
+              blurRadius: 6,
+              offset: Offset(1, 1),
+            ),
+          ],
                   ),
                 ),
               ],

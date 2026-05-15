@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_appbar.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/produto_destaque.dart';
 import '../widgets/secao_produtos.dart';
 import '../widgets/custom_bottom_navbar.dart';
