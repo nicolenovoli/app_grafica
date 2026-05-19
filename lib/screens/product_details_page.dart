@@ -6,177 +6,110 @@ import '../models/produto_model.dart';
 import '../models/produto_opcao_model.dart';
 
 import '../providers/carrinho_provider.dart';
+import '../providers/product_details_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-
   final ProdutoModel produto;
 
-  const ProductDetailsPage({
-    super.key,
-    required this.produto,
-  });
+  const ProductDetailsPage({super.key, required this.produto});
 
   @override
-  State<ProductDetailsPage> createState() =>
-      _ProductDetailsPageState();
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
-class _ProductDetailsPageState
-    extends State<ProductDetailsPage> {
-
-  int quantidade = 1;
-
-  final Map<String, String>
-      opcoesSelecionadas = {};
-
-  Map<String, List<ProdutoOpcaoModel>>
-      opcoesAgrupadas = {};
-
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
-
     super.initState();
 
-    for (var opcao
-        in widget.produto.opcoes) {
-
-      if (!opcoesAgrupadas.containsKey(
-        opcao.grupo,
-      )) {
-
-        opcoesAgrupadas[
-            opcao.grupo] = [];
-      }
-
-      opcoesAgrupadas[
-          opcao.grupo]!.add(opcao);
-    }
-
-    opcoesAgrupadas.forEach(
-
-      (grupo, listaOpcoes) {
-
-        opcoesSelecionadas[grupo] =
-            listaOpcoes.first.nome;
-      },
-    );
-  }
-
-  double calcularTotal() {
-
-    double total =
-        widget.produto.precoBase;
-
-    for (var grupo
-        in opcoesAgrupadas.entries) {
-
-      for (var opcao
-          in grupo.value) {
-
-        if (opcoesSelecionadas[
-                grupo.key] ==
-            opcao.nome) {
-
-          total +=
-              opcao.valorAdicional;
-        }
-      }
-    }
-
-    return total * quantidade;
+    Future.microtask(() {
+      Provider.of<ProductDetailsProvider>(
+        context,
+        listen: false,
+      ).inicializar(widget.produto);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final detailsProvider = Provider.of<ProductDetailsProvider>(context);
 
-    final carrinhoProvider =
-        Provider.of<CarrinhoProvider>(
+    final carrinhoProvider = Provider.of<CarrinhoProvider>(
       context,
       listen: false,
     );
 
-    double total = calcularTotal();
+    double valorUnitario = detailsProvider.calcularValorUnitario(
+      widget.produto,
+    );
+
+    double total = detailsProvider.calcularTotal(widget.produto);
 
     return Scaffold(
-
-      backgroundColor:
-          const Color(0xFFF7F6F2),
+      backgroundColor: const Color(0xFFF7F6F2),
 
       body: Column(
-
         children: [
-
           Expanded(
-
             child: SingleChildScrollView(
-
               child: Column(
-
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-
                   // ======================================
                   // IMAGEM
                   // ======================================
-
                   Stack(
-
                     children: [
-
                       Container(
-
                         height: 360,
                         width: double.infinity,
 
                         color: Colors.white,
 
                         child: Image.asset(
-
                           "assets/${widget.produto.imagem}",
 
                           fit: BoxFit.cover,
+
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey.shade200,
+
+                              child: const Center(
+                                child: Icon(
+                                  Icons.image,
+
+                                  size: 80,
+
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
 
                       SafeArea(
-
                         child: Padding(
-
-                          padding:
-                              const EdgeInsets.all(
-                            16,
-                          ),
+                          padding: const EdgeInsets.all(16),
 
                           child: GestureDetector(
-
                             onTap: () {
-                              Navigator.pop(
-                                context,
-                              );
+                              Navigator.pop(context);
                             },
 
                             child: Container(
-
                               width: 42,
                               height: 42,
 
-                              decoration:
-                                  BoxDecoration(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
 
-                                color:
-                                    Colors.white,
-
-                                borderRadius:
-                                    BorderRadius.circular(
-                                  14,
-                                ),
+                                borderRadius: BorderRadius.circular(14),
                               ),
 
-                              child: const Icon(
-                                Icons.arrow_back,
-                              ),
+                              child: const Icon(Icons.arrow_back),
                             ),
                           ),
                         ),
@@ -187,333 +120,195 @@ class _ProductDetailsPageState
                   // ======================================
                   // CONTEÚDO
                   // ======================================
-
                   Padding(
-
-                    padding:
-                        const EdgeInsets.all(
-                      24,
-                    ),
+                    padding: const EdgeInsets.all(24),
 
                     child: Column(
-
-                      crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
 
                       children: [
-
                         Text(
-
                           widget.produto.nome,
 
-                          style:
-                              const TextStyle(
-
+                          style: const TextStyle(
                             fontSize: 30,
 
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
 
                         Text(
-
                           "R\$ ${total.toStringAsFixed(2).replaceAll(".", ",")}",
 
-                          style:
-                              const TextStyle(
-
+                          style: const TextStyle(
                             fontSize: 28,
 
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
 
-                            color: Color(
-                              0xFF0B4D2B,
-                            ),
+                            color: Color(0xFF0B4D2B),
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
 
                         Text(
+                          widget.produto.descricao,
 
-                          widget.produto
-                              .descricao,
-
-                          style:
-                              const TextStyle(
-
+                          style: const TextStyle(
                             fontSize: 16,
 
-                            color:
-                                Colors.black54,
+                            color: Colors.black54,
 
                             height: 1.5,
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 32,
-                        ),
+                        const SizedBox(height: 32),
 
                         // ======================================
                         // OPÇÕES
                         // ======================================
+                        ...detailsProvider.opcoesAgrupadas.entries.map((entry) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
 
-                        ...opcoesAgrupadas.entries.map(
+                            children: [
+                              Text(
+                                entry.key,
 
-                          (entry) {
+                                style: const TextStyle(
+                                  fontSize: 18,
 
-                            return Column(
-
-                              crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
-
-                              children: [
-
-                                Text(
-
-                                  entry.key,
-
-                                  style:
-                                      const TextStyle(
-
-                                    fontSize: 18,
-
-                                    fontWeight:
-                                        FontWeight
-                                            .bold,
-                                  ),
+                                  fontWeight: FontWeight.bold,
                                 ),
+                              ),
 
-                                const SizedBox(
-                                  height: 14,
-                                ),
+                              const SizedBox(height: 14),
 
-                                Wrap(
+                              Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
 
-                                  spacing: 10,
-                                  runSpacing: 10,
+                                children: entry.value.map((
+                                  ProdutoOpcaoModel opcao,
+                                ) {
+                                  bool ativo =
+                                      detailsProvider.opcoesSelecionadas[entry
+                                          .key] ==
+                                      opcao.nome;
 
-                                  children:
+                                  return GestureDetector(
+                                    onTap: () {
+                                      detailsProvider.selecionarOpcao(
+                                        grupo: entry.key,
 
-                                      entry.value.map(
-
-                                    (opcao) {
-
-                                      bool ativo =
-
-                                          opcoesSelecionadas[
-                                                  entry.key] ==
-
-                                              opcao.nome;
-
-                                      return GestureDetector(
-
-                                        onTap: () {
-
-                                          setState(() {
-
-                                            opcoesSelecionadas[
-                                                    entry.key] =
-
-                                                opcao.nome;
-                                          });
-                                        },
-
-                                        child:
-                                            Container(
-
-                                          padding:
-                                              const EdgeInsets.symmetric(
-
-                                            horizontal:
-                                                18,
-
-                                            vertical:
-                                                12,
-                                          ),
-
-                                          decoration:
-                                              BoxDecoration(
-
-                                            color:
-                                                ativo
-
-                                                    ? const Color(
-                                                        0xFF0B4D2B,
-                                                      )
-
-                                                    : Colors.white,
-
-                                            borderRadius:
-                                                BorderRadius.circular(
-                                              30,
-                                            ),
-
-                                            border:
-                                                Border.all(
-
-                                              color:
-                                                  ativo
-
-                                                      ? const Color(
-                                                          0xFF0B4D2B,
-                                                        )
-
-                                                      : Colors.grey.shade300,
-                                            ),
-                                          ),
-
-                                          child:
-                                              Text(
-
-                                            opcao.nome,
-
-                                            style:
-                                                TextStyle(
-
-                                              color:
-                                                  ativo
-
-                                                      ? Colors.white
-
-                                                      : Colors.black,
-
-                                              fontWeight:
-                                                  FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
+                                        nomeOpcao: opcao.nome,
                                       );
                                     },
-                                  ).toList(),
-                                ),
 
-                                const SizedBox(
-                                  height: 28,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 18,
+
+                                        vertical: 12,
+                                      ),
+
+                                      decoration: BoxDecoration(
+                                        color: ativo
+                                            ? const Color(0xFF0B4D2B)
+                                            : Colors.white,
+
+                                        borderRadius: BorderRadius.circular(30),
+
+                                        border: Border.all(
+                                          color: ativo
+                                              ? const Color(0xFF0B4D2B)
+                                              : Colors.grey.shade300,
+                                        ),
+                                      ),
+
+                                      child: Text(
+                                        opcao.nome,
+
+                                        style: TextStyle(
+                                          color: ativo
+                                              ? Colors.white
+                                              : Colors.black,
+
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+
+                              const SizedBox(height: 28),
+                            ],
+                          );
+                        }),
 
                         // ======================================
                         // QUANTIDADE
                         // ======================================
-
                         const Text(
-
                           "Quantidade",
 
                           style: TextStyle(
                             fontSize: 18,
 
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 14,
-                        ),
+                        const SizedBox(height: 14),
 
                         Container(
-
-                          padding:
-                              const EdgeInsets.symmetric(
-
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 8,
                           ),
 
-                          decoration:
-                              BoxDecoration(
-
+                          decoration: BoxDecoration(
                             color: Colors.white,
 
-                            borderRadius:
-                                BorderRadius.circular(
-                              40,
-                            ),
+                            borderRadius: BorderRadius.circular(40),
                           ),
 
                           child: Row(
-
-                            mainAxisSize:
-                                MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.min,
 
                             children: [
-
-                              _botaoQuantidade(
-
-                                Icons.remove,
-
-                                () {
-
-                                  if (quantidade >
-                                      1) {
-
-                                    setState(() {
-
-                                      quantidade--;
-                                    });
-                                  }
-                                },
-                              ),
+                              _botaoQuantidade(Icons.remove, () {
+                                detailsProvider.diminuirQuantidade();
+                              }),
 
                               Padding(
-
-                                padding:
-                                    const EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 24,
                                 ),
 
                                 child: Text(
+                                  detailsProvider.quantidade.toString(),
 
-                                  quantidade
-                                      .toString(),
-
-                                  style:
-                                      const TextStyle(
-
+                                  style: const TextStyle(
                                     fontSize: 22,
 
-                                    fontWeight:
-                                        FontWeight
-                                            .bold,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
 
-                              _botaoQuantidade(
-
-                                Icons.add,
-
-                                () {
-
-                                  setState(() {
-
-                                    quantidade++;
-                                  });
-                                },
-                              ),
+                              _botaoQuantidade(Icons.add, () {
+                                detailsProvider.aumentarQuantidade();
+                              }),
                             ],
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 140,
-                        ),
+                        const SizedBox(height: 140),
                       ],
                     ),
                   ),
@@ -525,91 +320,123 @@ class _ProductDetailsPageState
           // ======================================
           // BOTÃO
           // ======================================
-
           Container(
+            padding: const EdgeInsets.all(20),
 
-            padding:
-                const EdgeInsets.all(20),
-
-            decoration:
-                const BoxDecoration(
-              color: Colors.white,
-            ),
+            decoration: const BoxDecoration(color: Colors.white),
 
             child: SizedBox(
-
               width: double.infinity,
               height: 58,
 
               child: ElevatedButton(
-
                 onPressed: () {
-
-                  carrinhoProvider
-                      .adicionarItem(
-
+                  carrinhoProvider.adicionarItem(
                     ItemPedidoModel(
+                      produtoId: widget.produto.id,
 
-                      produtoId:
-                          widget.produto.id,
+                      nome: widget.produto.nome,
 
-                      quantidade:
-                          quantidade,
+                      imagem: widget.produto.imagem,
 
-                      valorUnitario:
-                          total / quantidade,
+                      quantidade: detailsProvider.quantidade,
 
-                      subtotal:
-                          total,
+                      valorUnitario: valorUnitario,
 
-                      observacoes:
-                          opcoesSelecionadas
-                              .toString(),
+                      subtotal: total,
+
+                      observacoes: detailsProvider.opcoesSelecionadas.entries
+                          .map((e) => "${e.key}: ${e.value}")
+                          .join(" | "),
                     ),
                   );
 
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(
-
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
+                      behavior: SnackBarBehavior.floating,
 
-                      content: Text(
+                      backgroundColor: Colors.white,
 
-                        "${widget.produto.nome} adicionado ao carrinho",
+                      elevation: 8,
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
+
+                      content: Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 14,
+
+                            backgroundColor: Color(0xFF0B4D2B),
+
+                            child: Icon(
+                              Icons.check,
+
+                              color: Colors.white,
+
+                              size: 16,
+                            ),
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+
+                              mainAxisSize: MainAxisSize.min,
+
+                              children: [
+                                const Text(
+                                  "Adicionado ao carrinho!",
+
+                                  style: TextStyle(
+                                    color: Colors.black,
+
+                                    fontWeight: FontWeight.bold,
+
+                                    fontSize: 15,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 2),
+
+                                Text(
+                                  "${detailsProvider.quantidade} x ${widget.produto.nome}",
+
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 },
 
-                style:
-                    ElevatedButton.styleFrom(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0B4D2B),
 
-                  backgroundColor:
-                      const Color(
-                    0xFF0B4D2B,
-                  ),
-
-                  shape:
-                      RoundedRectangleBorder(
-
-                    borderRadius:
-                        BorderRadius.circular(
-                      20,
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
 
                 child: const Text(
-
                   "Adicionar ao carrinho",
 
                   style: TextStyle(
-
                     fontSize: 18,
 
-                    fontWeight:
-                        FontWeight.bold,
+                    fontWeight: FontWeight.bold,
 
                     color: Colors.white,
                   ),
@@ -622,28 +449,18 @@ class _ProductDetailsPageState
     );
   }
 
-  Widget _botaoQuantidade(
-    IconData icon,
-    VoidCallback onTap,
-  ) {
-
+  Widget _botaoQuantidade(IconData icon, VoidCallback onTap) {
     return GestureDetector(
-
       onTap: onTap,
 
       child: Container(
-
         width: 42,
         height: 42,
 
         decoration: BoxDecoration(
-
           color: Colors.grey.shade100,
 
-          borderRadius:
-              BorderRadius.circular(
-            30,
-          ),
+          borderRadius: BorderRadius.circular(30),
         ),
 
         child: Icon(icon),

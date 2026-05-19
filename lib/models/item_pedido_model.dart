@@ -2,6 +2,14 @@ class ItemPedidoModel {
 
   final int produtoId;
 
+  // ==========================================
+  // NOVOS CAMPOS
+  // ==========================================
+
+  final String nome;
+
+  final String imagem;
+
   final int quantidade;
 
   final double valorUnitario;
@@ -11,10 +19,23 @@ class ItemPedidoModel {
   final String observacoes;
 
   ItemPedidoModel({
+
     required this.produtoId,
+
+    // ==========================================
+    // NOVOS CAMPOS
+    // ==========================================
+
+    required this.nome,
+
+    required this.imagem,
+
     required this.quantidade,
+
     required this.valorUnitario,
+
     required this.subtotal,
+
     required this.observacoes,
   });
 
@@ -23,7 +44,16 @@ class ItemPedidoModel {
   ) {
 
     return ItemPedidoModel(
+
       produtoId: json["produto_id"],
+
+      // ==========================================
+      // NOVOS CAMPOS
+      // ==========================================
+
+      nome: json["nome"] ?? "",
+
+      imagem: json["imagem"] ?? "",
 
       quantidade: json["quantidade"],
 
@@ -44,6 +74,14 @@ class ItemPedidoModel {
 
       "produto_id": produtoId,
 
+      // ==========================================
+      // NOVOS CAMPOS
+      // ==========================================
+
+      "nome": nome,
+
+      "imagem": imagem,
+
       "quantidade": quantidade,
 
       "valor_unitario": valorUnitario,
@@ -51,7 +89,6 @@ class ItemPedidoModel {
       "subtotal": subtotal,
 
       "observacoes": observacoes,
-
     };
   }
 }
