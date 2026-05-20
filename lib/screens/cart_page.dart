@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 
 import '../providers/carrinho_provider.dart';
 
-class CarrinhoPage extends StatelessWidget {
+class CartPage extends StatelessWidget {
 
-  const CarrinhoPage({
+  const CartPage({
     super.key,
   });
 
@@ -293,7 +293,7 @@ class CarrinhoPage extends StatelessWidget {
 
                                           Text(
 
-                                            "Qtd: ${item.quantidade}",
+                                            "Quantidade: ${item.quantidade}",
 
                                             style:
                                                 const TextStyle(
@@ -377,7 +377,7 @@ class CarrinhoPage extends StatelessWidget {
 
                               const Text(
 
-                                "Total do pedido",
+                                "Total do Pedido",
 
                                 style: TextStyle(
                                   fontSize: 20,
@@ -533,7 +533,7 @@ class CarrinhoPage extends StatelessWidget {
                                     child:
                                         const Text(
 
-                                      "Finalizar pedido",
+                                      "Finalizar Pedido",
 
                                       style: TextStyle(
 
@@ -611,7 +611,7 @@ class CarrinhoPage extends StatelessWidget {
 
             const Text(
 
-              "Carrinho vazio",
+              "Carrinho Vazio",
 
               style: TextStyle(
 
@@ -628,7 +628,7 @@ class CarrinhoPage extends StatelessWidget {
 
             const Text(
 
-              "Adicione produtos do nosso catálogo para começar.",
+              "Adicione produtos do nosso catálogo para começar",
 
               textAlign: TextAlign.center,
 
@@ -682,7 +682,7 @@ class CarrinhoPage extends StatelessWidget {
 
                 child: const Text(
 
-                  "Ver catálogo",
+                  "Ver Catálogo",
 
                   style: TextStyle(
 
