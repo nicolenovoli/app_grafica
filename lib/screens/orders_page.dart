@@ -101,7 +101,7 @@ class _OrdersPageState extends State<OrdersPage> {
         const SizedBox(height: 16),
 
         const Text(
-          "Informe seu telefone para visualizar seu histórico de pedidos.",
+          "Informe seu telefone para visualizar seu histórico de pedidos",
 
           textAlign: TextAlign.center,
 
@@ -280,6 +280,9 @@ class _OrdersPageState extends State<OrdersPage> {
 
                 child: const Text(
                   "Trocar telefone",
+                  style: TextStyle(
+                    color: Color(0xFF0B4D2B),
+                  ),
                 ),
               ),
             ),

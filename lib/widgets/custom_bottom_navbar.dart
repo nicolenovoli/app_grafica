@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/cart_page.dart';
 
 import '../screens/orders_page.dart';
 
@@ -72,7 +73,15 @@ class CustomBottomNavbar extends StatelessWidget {
             label: 'CARRINHO',
             ativo: false,
 
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      const CartPage(),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -60,7 +60,7 @@ class ProdutoDestaque extends StatelessWidget {
                 const Text(
                   'Cartões de Visita',
                   style: TextStyle(
-                    color: const Color(0xFF0B4D2B),
+                    color: Color(0xFF0B4D2B),
                     fontSize: 34,
                     fontWeight: FontWeight.bold,
                          shadows: [

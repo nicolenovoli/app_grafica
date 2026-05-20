@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'providers/produto_provider.dart';
 import 'providers/carrinho_provider.dart';
+import 'providers/product_details_provider.dart';
 
 import 'screens/first_page.dart';
 
@@ -20,6 +21,11 @@ void main() {
 
         ChangeNotifierProvider(
           create: (_) => CarrinhoProvider(),
+        ),
+      
+        ChangeNotifierProvider(
+          create: (_) =>
+              ProductDetailsProvider(),
         ),
       ],
 

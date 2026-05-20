@@ -1,55 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/cart_page.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+
+  const CustomAppBar({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
+
       padding: const EdgeInsets.only(
+
         top: 50,
         left: 20,
         right: 20,
       ),
+
       child: Row(
+
         children: [
 
           // LOGO
           ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+
+            borderRadius:
+                BorderRadius.circular(16),
+
             child: Image.asset(
+
               "assets/logo.png",
+
               width: 60,
               height: 70,
+
               fit: BoxFit.cover,
             ),
           ),
 
-          const SizedBox(width: 12),
+          const SizedBox(
+            width: 12,
+          ),
 
           // TEXTO
           const Expanded(
+
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+
               children: [
 
                 Text(
+
                   'BEM-VINDO À',
+
                   style: TextStyle(
+
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+
+                    fontWeight:
+                        FontWeight.w500,
+
                     color: Colors.black54,
                   ),
                 ),
 
-                SizedBox(height: 4),
+                SizedBox(
+                  height: 4,
+                ),
 
                 Text(
+
                   'Gráfica Pergaminho',
+
                   style: TextStyle(
+
                     fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0B4D2B),
+
+                    fontWeight:
+                        FontWeight.bold,
+
+                    color:
+                        Color(0xFF0B4D2B),
                   ),
                 ),
               ],
@@ -58,17 +94,44 @@ class CustomAppBar extends StatelessWidget {
 
           // CARRINHO
           Container(
+
             width: 60,
             height: 60,
+
             decoration: BoxDecoration(
+
               border: Border.all(
-                color: Colors.grey.shade300,
+
+                color:
+                    Colors.grey.shade300,
               ),
-              borderRadius: BorderRadius.circular(20),
+
+              borderRadius:
+                  BorderRadius.circular(20),
             ),
-            child: const Icon(
-              Icons.shopping_bag_outlined,
-              color: Color(0xFF0B4D2B),
+
+            child: IconButton(
+
+              onPressed: () {
+
+                Navigator.push(
+
+                  context,
+
+                  MaterialPageRoute(
+
+                    builder: (_) =>
+                        const CartPage(),
+                  ),
+                );
+              },
+
+              icon: const Icon(
+
+                Icons.shopping_bag_outlined,
+
+                color: Color(0xFF0B4D2B),
+              ),
             ),
           ),
         ],

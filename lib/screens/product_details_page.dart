@@ -6,9 +6,9 @@ import '../models/produto_model.dart';
 import '../models/produto_opcao_model.dart';
 
 import '../providers/carrinho_provider.dart';
+import '../providers/product_details_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-
   final ProdutoModel produto;
 
   const ProductDetailsPage({
@@ -24,78 +24,49 @@ class ProductDetailsPage extends StatefulWidget {
 class _ProductDetailsPageState
     extends State<ProductDetailsPage> {
 
-  int quantidade = 1;
-
-  final Map<String, String>
-      opcoesSelecionadas = {};
-
-  Map<String, List<ProdutoOpcaoModel>>
-      opcoesAgrupadas = {};
-
   @override
   void initState() {
 
     super.initState();
 
-    for (var opcao
-        in widget.produto.opcoes) {
+    Future.microtask(() {
 
-      if (!opcoesAgrupadas.containsKey(
-        opcao.grupo,
-      )) {
+      Provider.of<ProductDetailsProvider>(
 
-        opcoesAgrupadas[
-            opcao.grupo] = [];
-      }
+        context,
+        listen: false,
 
-      opcoesAgrupadas[
-          opcao.grupo]!.add(opcao);
-    }
-
-    opcoesAgrupadas.forEach(
-
-      (grupo, listaOpcoes) {
-
-        opcoesSelecionadas[grupo] =
-            listaOpcoes.first.nome;
-      },
-    );
-  }
-
-  double calcularTotal() {
-
-    double total =
-        widget.produto.precoBase;
-
-    for (var grupo
-        in opcoesAgrupadas.entries) {
-
-      for (var opcao
-          in grupo.value) {
-
-        if (opcoesSelecionadas[
-                grupo.key] ==
-            opcao.nome) {
-
-          total +=
-              opcao.valorAdicional;
-        }
-      }
-    }
-
-    return total * quantidade;
+      ).inicializar(
+        widget.produto,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
 
+    final detailsProvider =
+        Provider.of<ProductDetailsProvider>(
+      context,
+    );
+
     final carrinhoProvider =
         Provider.of<CarrinhoProvider>(
+
       context,
       listen: false,
     );
 
-    double total = calcularTotal();
+    double valorUnitario =
+        detailsProvider
+            .calcularValorUnitario(
+      widget.produto,
+    );
+
+    double total =
+        detailsProvider.calcularTotal(
+      widget.produto,
+    );
 
     return Scaffold(
 
@@ -137,6 +108,33 @@ class _ProductDetailsPageState
                           "assets/${widget.produto.imagem}",
 
                           fit: BoxFit.cover,
+
+                          errorBuilder:
+                              (
+                                context,
+                                error,
+                                stackTrace,
+                              ) {
+
+                            return Container(
+
+                              color:
+                                  Colors.grey.shade200,
+
+                              child: const Center(
+
+                                child: Icon(
+
+                                  Icons.image,
+
+                                  size: 80,
+
+                                  color:
+                                      Colors.grey,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
 
@@ -152,6 +150,7 @@ class _ProductDetailsPageState
                           child: GestureDetector(
 
                             onTap: () {
+
                               Navigator.pop(
                                 context,
                               );
@@ -174,7 +173,8 @@ class _ProductDetailsPageState
                                 ),
                               ),
 
-                              child: const Icon(
+                              child:
+                                  const Icon(
                                 Icons.arrow_back,
                               ),
                             ),
@@ -268,7 +268,10 @@ class _ProductDetailsPageState
                         // OPÇÕES
                         // ======================================
 
-                        ...opcoesAgrupadas.entries.map(
+                        ...detailsProvider
+                            .opcoesAgrupadas
+                            .entries
+                            .map(
 
                           (entry) {
 
@@ -308,26 +311,36 @@ class _ProductDetailsPageState
 
                                       entry.value.map(
 
-                                    (opcao) {
+                                    (
+                                      ProdutoOpcaoModel
+                                          opcao,
+                                    ) {
 
                                       bool ativo =
 
-                                          opcoesSelecionadas[
-                                                  entry.key] ==
+                                          detailsProvider
+                                                      .opcoesSelecionadas[
+                                                  entry
+                                                      .key] ==
 
-                                              opcao.nome;
+                                              opcao
+                                                  .nome;
 
                                       return GestureDetector(
 
                                         onTap: () {
 
-                                          setState(() {
+                                          detailsProvider
+                                              .selecionarOpcao(
 
-                                            opcoesSelecionadas[
-                                                    entry.key] =
+                                            grupo:
+                                                entry
+                                                    .key,
 
-                                                opcao.nome;
-                                          });
+                                            nomeOpcao:
+                                                opcao
+                                                    .nome,
+                                          );
                                         },
 
                                         child:
@@ -460,14 +473,8 @@ class _ProductDetailsPageState
 
                                 () {
 
-                                  if (quantidade >
-                                      1) {
-
-                                    setState(() {
-
-                                      quantidade--;
-                                    });
-                                  }
+                                  detailsProvider
+                                      .diminuirQuantidade();
                                 },
                               ),
 
@@ -480,7 +487,8 @@ class _ProductDetailsPageState
 
                                 child: Text(
 
-                                  quantidade
+                                  detailsProvider
+                                      .quantidade
                                       .toString(),
 
                                   style:
@@ -501,10 +509,8 @@ class _ProductDetailsPageState
 
                                 () {
 
-                                  setState(() {
-
-                                    quantidade++;
-                                  });
+                                  detailsProvider
+                                      .aumentarQuantidade();
                                 },
                               ),
                             ],
@@ -553,32 +559,197 @@ class _ProductDetailsPageState
                       produtoId:
                           widget.produto.id,
 
+                      nome:
+                          widget.produto.nome,
+
+                      imagem:
+                          widget.produto.imagem,
+
                       quantidade:
-                          quantidade,
+                          detailsProvider
+                              .quantidade,
 
                       valorUnitario:
-                          total / quantidade,
+                          valorUnitario,
 
                       subtotal:
                           total,
 
                       observacoes:
-                          opcoesSelecionadas
-                              .toString(),
+                          detailsProvider
+                              .opcoesSelecionadas
+                              .entries
+                              .map(
+                                (e) =>
+                                    "${e.key}: ${e.value}",
+                              )
+                              .join(" | "),
                     ),
                   );
 
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(
+                  showDialog(
 
-                    SnackBar(
+                    context: context,
 
-                      content: Text(
+                    barrierColor:
+                        Colors.transparent,
 
-                        "${widget.produto.nome} adicionado ao carrinho",
-                      ),
-                    ),
+                    builder: (context) {
+
+                      Future.delayed(
+
+                        const Duration(
+                          seconds: 2,
+                        ),
+
+                        () {
+
+                          if (context.mounted) {
+
+                            Navigator.pop(
+                              context,
+                            );
+                          }
+                        },
+                      );
+
+                      return SafeArea(
+
+                        child: Align(
+
+                          alignment:
+                              Alignment.topCenter,
+
+                          child: Container(
+
+                            margin:
+                                const EdgeInsets.only(
+
+                              top: 20,
+                              left: 20,
+                              right: 20,
+                            ),
+
+                            padding:
+                                const EdgeInsets.all(
+                              16,
+                            ),
+
+                            decoration:
+                                BoxDecoration(
+
+                              color: Colors.white,
+
+                              borderRadius:
+                                  BorderRadius.circular(
+                                18,
+                              ),
+
+                              boxShadow: const [
+
+                                BoxShadow(
+
+                                  blurRadius: 10,
+
+                                  color:
+                                      Colors.black12,
+                                ),
+                              ],
+                            ),
+
+                            child: Material(
+
+                              color:
+                                  Colors.transparent,
+
+                              child: Row(
+
+                                children: [
+
+                                  const CircleAvatar(
+
+                                    radius: 14,
+
+                                    backgroundColor:
+                                        Color(
+                                      0xFF0B4D2B,
+                                    ),
+
+                                    child: Icon(
+
+                                      Icons.check,
+
+                                      color:
+                                          Colors.white,
+
+                                      size: 16,
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+
+                                  Expanded(
+
+                                    child: Column(
+
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment
+                                              .start,
+
+                                      mainAxisSize:
+                                          MainAxisSize
+                                              .min,
+
+                                      children: [
+
+                                        const Text(
+
+                                          "Adicionado ao carrinho!",
+
+                                          style:
+                                              TextStyle(
+
+                                            color:
+                                                Colors.black,
+
+                                            fontWeight:
+                                                FontWeight.bold,
+
+                                            fontSize:
+                                                15,
+                                          ),
+                                        ),
+
+                                        const SizedBox(
+                                          height: 2,
+                                        ),
+
+                                        Text(
+
+                                          "${detailsProvider.quantidade} x ${widget.produto.nome}",
+
+                                          style:
+                                              const TextStyle(
+
+                                            color:
+                                                Colors.black54,
+
+                                            fontSize:
+                                                13,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
 
