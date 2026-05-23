@@ -1,24 +1,30 @@
 class ClienteModel {
 
-  final int id;
+  final int? id;
 
   final String nome;
 
   final String telefone;
 
-  final String email;
+  final String? email;
 
   final String tipoEntrega;
 
-  final String endereco;
+  final String? endereco;
 
   ClienteModel({
-    required this.id,
+
+    this.id,
+
     required this.nome,
+
     required this.telefone,
-    required this.email,
+
+    this.email,
+
     required this.tipoEntrega,
-    required this.endereco,
+
+    this.endereco,
   });
 
   factory ClienteModel.fromJson(
@@ -26,6 +32,7 @@ class ClienteModel {
   ) {
 
     return ClienteModel(
+
       id: json["id"],
 
       nome: json["nome"],
@@ -34,7 +41,8 @@ class ClienteModel {
 
       email: json["email"],
 
-      tipoEntrega: json["tipo_entrega"],
+      tipoEntrega:
+          json["tipo_entrega"],
 
       endereco: json["endereco"],
     );
@@ -50,10 +58,10 @@ class ClienteModel {
 
       "email": email,
 
-      "tipo_entrega": tipoEntrega,
+      "tipo_entrega":
+          tipoEntrega,
 
       "endereco": endereco,
-
     };
   }
 }

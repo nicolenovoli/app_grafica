@@ -86,12 +86,61 @@ class _ProductDetailsPageState
     return total * quantidade;
   }
 
+  String pegarImagemProduto() {
+
+    if (widget.produto.nome ==
+        "Cartões de Visita") {
+
+      return "assets/cartao1.png";
+    }
+
+    if (widget.produto.nome ==
+        "Panfletos") {
+
+      return "assets/panfletos.jpg";
+    }
+
+    if (widget.produto.nome ==
+        "Pastas Personalizadas") {
+
+      return "assets/pasta.jpg";
+    }
+
+    if (widget.produto.nome ==
+        "Cartazes") {
+
+      return "assets/cartaz.jpeg";
+    }
+
+    if (widget.produto.nome ==
+        "Folders") {
+
+      return "assets/folder.jpg";
+    }
+
+    if (widget.produto.nome ==
+        "Etiquetas Adesivas") {
+
+      return "assets/etiqueta.jpeg";
+    }
+
+    if (widget.produto.nome ==
+        "Receituário Médico") {
+
+      return "assets/receituario.jpeg";
+    }
+
+    return "assets/default.png";
+  }
+
   @override
   Widget build(BuildContext context) {
 
     final carrinhoProvider =
         Provider.of<CarrinhoProvider>(
+
       context,
+
       listen: false,
     );
 
@@ -134,7 +183,7 @@ class _ProductDetailsPageState
 
                         child: Image.asset(
 
-                          "assets/${widget.produto.imagem}",
+                          pegarImagemProduto(),
 
                           fit: BoxFit.cover,
                         ),
@@ -152,6 +201,7 @@ class _ProductDetailsPageState
                           child: GestureDetector(
 
                             onTap: () {
+
                               Navigator.pop(
                                 context,
                               );

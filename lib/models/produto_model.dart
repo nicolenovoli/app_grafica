@@ -10,8 +10,6 @@ class ProdutoModel {
 
   final double precoBase;
 
-  final String imagem;
-
   final List<ProdutoOpcaoModel>
       opcoes;
 
@@ -25,10 +23,42 @@ class ProdutoModel {
 
     required this.precoBase,
 
-    required this.imagem,
-
     required this.opcoes,
   });
+
+  // =====================================
+  // IMAGEM LOCAL
+  // =====================================
+
+  String get imagem {
+
+    switch (nome.toLowerCase()) {
+
+      case "cartões de visita":
+        return "assets/cartao1.png";
+
+      case "panfletos":
+        return "assets/panfletos.png";
+
+      case "pastas personalizadas":
+        return "assets/pastas.png";
+
+      case "cartazes":
+        return "assets/cartazes.png";
+
+      case "folders":
+        return "assets/folders.png";
+
+      case "etiquetas adesivas":
+        return "assets/etiquetas.png";
+
+      case "receituário médico":
+        return "assets/receituario.png";
+
+      default:
+        return "assets/placeholder.png";
+    }
+  }
 
   factory ProdutoModel.fromJson(
     Map<String, dynamic> json,
@@ -43,13 +73,9 @@ class ProdutoModel {
       descricao: json["descricao"],
 
       precoBase:
-
           (json["preco_base"]
                   as num)
               .toDouble(),
-
-      imagem:
-          json["imagem"] ?? "",
 
       opcoes:
 
@@ -86,8 +112,6 @@ class ProdutoModel {
 
       "preco_base":
           precoBase,
-
-      "imagem": imagem,
 
       "opcoes":
 

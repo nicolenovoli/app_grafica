@@ -139,7 +139,32 @@ class _ProdutoItemState
 
                   child: Image.asset(
 
-                    "assets/${widget.produto.imagem}",
+                    widget.produto.nome == "Cartões de Visita"
+    ? "assets/cartao1.png"
+
+      : widget.produto.nome == "Panfletos"
+          ? "assets/panfletos.jpg"
+
+            : widget.produto.nome == "Pastas Personalizadas"
+                ? "assets/pasta.jpg"
+
+                  : widget.produto.nome == "Cartazes"
+                      ? "assets/cartaz.jpeg"
+
+                        : widget.produto.nome == "Folders"
+                            ? "assets/folder.jpg"
+
+                              : widget.produto.nome ==
+                                      "Etiquetas Adesivas"
+                                  ? "assets/etiqueta.jpeg"
+
+                                    : widget.produto.nome ==
+                                            "Receituário Médico"
+                                        ? "assets/receituario.jpeg"
+          
+
+
+    : "assets/${widget.produto.imagem}",
 
                     fit: BoxFit.cover,
 

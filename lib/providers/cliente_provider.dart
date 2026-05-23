@@ -117,6 +117,10 @@ class ClienteProvider extends ChangeNotifier {
 
     } catch (e) {
 
+        debugPrint(
+    "ERRO CLIENTE: $e",
+  );
+
       carregando = false;
 
       notifyListeners();
