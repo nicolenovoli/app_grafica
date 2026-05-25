@@ -1,40 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/carrinho_page.dart';
 
 import '../screens/orders_page.dart';
 
 class CustomAppBar extends StatelessWidget {
-
-  const CustomAppBar({
-    super.key,
-  });
+  const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
-
-      padding: const EdgeInsets.only(
-
-        top: 40,
-        left: 30,
-        right: 30,
-      ),
+      padding: const EdgeInsets.only(top: 40, left: 30, right: 30),
 
       child: Row(
-
         children: [
-
           // =====================================
           // LOGO
           // =====================================
-
           ClipRRect(
-
-            borderRadius:
-                BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(18),
 
             child: Image.asset(
-
               "assets/logo.png",
 
               width: 65,
@@ -49,46 +34,34 @@ class CustomAppBar extends StatelessWidget {
           // =====================================
           // TEXTO
           // =====================================
-
           const Expanded(
-
             child: Column(
-
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-
                 Text(
-
                   "BEM-VINDO À",
 
                   style: TextStyle(
-
                     fontSize: 12,
 
                     color: Colors.black54,
 
-                    fontWeight:
-                        FontWeight.w500,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
 
                 SizedBox(height: 4),
 
                 Text(
-
                   "Gráfica Pergaminho",
 
                   style: TextStyle(
-
                     fontSize: 28,
 
-                    fontWeight:
-                        FontWeight.bold,
+                    fontWeight: FontWeight.bold,
 
-                    color:
-                        Color(0xFF0B4D2B),
+                    color: Color(0xFF0B4D2B),
                   ),
                 ),
               ],
@@ -98,40 +71,24 @@ class CustomAppBar extends StatelessWidget {
           // =====================================
           // MENU
           // =====================================
-
           Row(
-
             children: [
-
               // CATÁLOGO
-              _menuItem(
-                titulo: "CATÁLOGO",
-                ativo: true,
-              ),
+              _menuItem(titulo: "CATÁLOGO", ativo: true),
 
               const SizedBox(width: 30),
 
               // PEDIDOS
               GestureDetector(
-
                 onTap: () {
-
                   Navigator.push(
-
                     context,
 
-                    MaterialPageRoute(
-
-                      builder: (_) =>
-                          const OrdersPage(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const OrdersPage()),
                   );
                 },
 
-                child: _menuItem(
-                  titulo: "PEDIDOS",
-                  ativo: true,
-                ),
+                child: _menuItem(titulo: "PEDIDOS", ativo: true),
               ),
 
               const SizedBox(width: 30),
@@ -139,51 +96,44 @@ class CustomAppBar extends StatelessWidget {
               // =====================================
               // BOTÃO CARRINHO
               // =====================================
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
 
-              Container(
+                    MaterialPageRoute(builder: (_) => const CarrinhoPage()),
+                  );
+                },
 
-                padding:
-                    const EdgeInsets.symmetric(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 14,
+                  ),
 
-                  horizontal: 20,
-                  vertical: 14,
-                ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0B4D2B),
 
-                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
 
-                  color:
-                      const Color(0xFF0B4D2B),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.shopping_bag_outlined, color: Colors.white),
 
-                  borderRadius:
-                      BorderRadius.circular(18),
-                ),
+                      SizedBox(width: 10),
 
-                child: const Row(
+                      Text(
+                        "CARRINHO",
 
-                  children: [
+                        style: TextStyle(
+                          color: Colors.white,
 
-                    Icon(
-
-                      Icons.shopping_bag_outlined,
-
-                      color: Colors.white,
-                    ),
-
-                    SizedBox(width: 10),
-
-                    Text(
-
-                      "CARRINHO",
-
-                      style: TextStyle(
-
-                        color: Colors.white,
-
-                        fontWeight:
-                            FontWeight.bold,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -193,26 +143,16 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 
-  Widget _menuItem({
-
-    required String titulo,
-
-    bool ativo = false,
-  }) {
-
+  Widget _menuItem({required String titulo, bool ativo = false}) {
     return Text(
-
       titulo,
 
       style: TextStyle(
-
         fontSize: 15,
 
         fontWeight: FontWeight.bold,
 
-        color: ativo
-            ? const Color(0xFF0B4D2B)
-            : Colors.black54,
+        color: ativo ? const Color(0xFF0B4D2B) : Colors.black54,
       ),
     );
   }

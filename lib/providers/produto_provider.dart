@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/produto_model.dart';
+import '../services/produto_service.dart';
 
 class ProdutoProvider extends ChangeNotifier {
 
-  final String baseUrl =
-      "http://localhost:8000";
+  final ProdutoService _service =
+      ProdutoService();
 
   bool carregando = false;
 
@@ -24,32 +22,8 @@ class ProdutoProvider extends ChangeNotifier {
 
     try {
 
-      final response = await http.get(
-
-        Uri.parse(
-          "$baseUrl/produtos/",
-        ),
-      );
-
-      if (response.statusCode == 200) {
-
-        final data =
-            jsonDecode(response.body);
-
-        produtos = (data as List)
-
-            .map(
-
-              (produto) =>
-
-                  ProdutoModel
-                      .fromJson(
-                produto,
-              ),
-            )
-
-            .toList();
-      }
+      produtos = await _service
+          .listarProdutos();
 
     } catch (e) {
 
@@ -71,33 +45,16 @@ class ProdutoProvider extends ChangeNotifier {
 
     try {
 
-      final response = await http.get(
-
-        Uri.parse(
-          "$baseUrl/produtos/$produtoId",
-        ),
+      produto = await _service
+          .buscarProdutoPorId(
+        produtoId,
       );
-
-      if (response.statusCode == 200) {
-
-        final data =
-            jsonDecode(response.body);
-
-        produto =
-            ProdutoModel.fromJson(data);
-
-        carregando = false;
-
-        notifyListeners();
-
-        return true;
-      }
 
       carregando = false;
 
       notifyListeners();
 
-      return false;
+      return produto != null;
 
     } catch (e) {
 

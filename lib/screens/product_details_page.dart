@@ -603,6 +603,12 @@ class _ProductDetailsPageState
                       produtoId:
                           widget.produto.id,
 
+                      nomeProduto:
+                          widget.produto.nome,
+
+                      imagemProduto:
+                          pegarImagemProduto(),
+
                       quantidade:
                           quantidade,
 
@@ -613,8 +619,8 @@ class _ProductDetailsPageState
                           total,
 
                       observacoes:
-                          opcoesSelecionadas
-                              .toString(),
+                          opcoesSelecionadas.values
+                              .join(" • "),
                     ),
                   );
 

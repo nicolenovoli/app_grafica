@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/pedido_model.dart';
+import '../services/pedido_service.dart';
 
 class PedidoProvider extends ChangeNotifier {
 
-  final String baseUrl =
-      "http://10.0.2.2:8000";
+  final PedidoService _service =
+      PedidoService();
 
   bool carregando = false;
 
@@ -26,41 +24,16 @@ class PedidoProvider extends ChangeNotifier {
 
     try {
 
-      final response = await http.post(
-
-        Uri.parse("$baseUrl/pedidos/"),
-
-        headers: {
-          "Content-Type":
-              "application/json",
-        },
-
-        body: jsonEncode(
-          novoPedido.toJson(),
-        ),
+      pedido = await _service
+          .criarPedido(
+        novoPedido,
       );
-
-      if (response.statusCode == 200 ||
-          response.statusCode == 201) {
-
-        final data =
-            jsonDecode(response.body);
-
-        pedido =
-            PedidoModel.fromJson(data);
-
-        carregando = false;
-
-        notifyListeners();
-
-        return true;
-      }
 
       carregando = false;
 
       notifyListeners();
 
-      return false;
+      return pedido != null;
 
     } catch (e) {
 
@@ -72,7 +45,6 @@ class PedidoProvider extends ChangeNotifier {
     }
   }
 
-
   Future<void> listarPedidos() async {
 
     carregando = true;
@@ -81,26 +53,8 @@ class PedidoProvider extends ChangeNotifier {
 
     try {
 
-      final response = await http.get(
-        Uri.parse("$baseUrl/pedidos/"),
-      );
-
-      if (response.statusCode == 200) {
-
-        final data =
-            jsonDecode(response.body);
-
-        pedidos = (data as List)
-
-            .map(
-              (pedido) =>
-                  PedidoModel.fromJson(
-                    pedido,
-                  ),
-            )
-
-            .toList();
-      }
+      pedidos = await _service
+          .listarPedidos();
 
     } catch (e) {
 
@@ -111,7 +65,6 @@ class PedidoProvider extends ChangeNotifier {
 
     notifyListeners();
   }
-
 
   Future<bool> buscarPedidoPorId(
     int pedidoId,
@@ -123,33 +76,16 @@ class PedidoProvider extends ChangeNotifier {
 
     try {
 
-      final response = await http.get(
-
-        Uri.parse(
-          "$baseUrl/pedidos/$pedidoId",
-        ),
+      pedido = await _service
+          .buscarPedidoPorId(
+        pedidoId,
       );
-
-      if (response.statusCode == 200) {
-
-        final data =
-            jsonDecode(response.body);
-
-        pedido =
-            PedidoModel.fromJson(data);
-
-        carregando = false;
-
-        notifyListeners();
-
-        return true;
-      }
 
       carregando = false;
 
       notifyListeners();
 
-      return false;
+      return pedido != null;
 
     } catch (e) {
 
@@ -160,7 +96,6 @@ class PedidoProvider extends ChangeNotifier {
       return false;
     }
   }
-
 
   Future<void> buscarPedidosPorTelefone(
     String telefone,
@@ -172,29 +107,10 @@ class PedidoProvider extends ChangeNotifier {
 
     try {
 
-      final response = await http.get(
-
-        Uri.parse(
-          "$baseUrl/pedidos/cliente/$telefone",
-        ),
+      pedidos = await _service
+          .buscarPedidosPorTelefone(
+        telefone,
       );
-
-      if (response.statusCode == 200) {
-
-        final data =
-            jsonDecode(response.body);
-
-        pedidos = (data as List)
-
-            .map(
-              (pedido) =>
-                  PedidoModel.fromJson(
-                    pedido,
-                  ),
-            )
-
-            .toList();
-      }
 
     } catch (e) {
 
@@ -206,21 +122,16 @@ class PedidoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ==========================================
-  // LIMPAR PEDIDO
-  // ==========================================
+  void limparPedidos() {
 
-  void limparPedido() {
-
-    pedido = null;
+    pedidos.clear();
 
     notifyListeners();
   }
 
+  void limparPedido() {
 
-  void limparPedidos() {
-
-    pedidos.clear();
+    pedido = null;
 
     notifyListeners();
   }
