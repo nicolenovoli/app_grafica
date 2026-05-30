@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'providers/produto_provider.dart';
 import 'providers/carrinho_provider.dart';
-
+import 'providers/cliente_provider.dart';
+import 'providers/pedido_provider.dart';
 import 'screens/first_page.dart';
 
 void main() {
@@ -21,6 +22,13 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => CarrinhoProvider(),
         ),
+
+        ChangeNotifierProvider(
+  create: (_) => ClienteProvider(),
+),
+    ChangeNotifierProvider(
+      create: (_) => PedidoProvider(),
+    ),
       ],
 
       child: const MyApp(),

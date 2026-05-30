@@ -5,6 +5,8 @@ import '../providers/carrinho_provider.dart';
 
 import '../widgets/custom_app_bar.dart';
 
+import '../screens/cliente_page.dart';
+
 class CarrinhoPage extends StatelessWidget {
   const CarrinhoPage({super.key});
 
@@ -316,34 +318,43 @@ class CarrinhoPage extends StatelessWidget {
                                 const SizedBox(height: 30),
 
                                 SizedBox(
-                                  width: double.infinity,
+  width: double.infinity,
 
-                                  height: 56,
+  height: 56,
 
-                                  child: ElevatedButton(
-                                    onPressed: () {},
+  child: ElevatedButton(
+    onPressed: () {
 
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF0B4D2B),
+      Navigator.push(
+        context,
 
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(22),
-                                      ),
-                                    ),
+        MaterialPageRoute(
+          builder: (context) => const ClientePage(),
+        ),
+      );
+    },
 
-                                    child: const Text(
-                                      "Finalizar pedido",
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xFF0B4D2B),
 
-                                      style: TextStyle(
-                                        fontSize: 16,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+      ),
+    ),
 
-                                        fontWeight: FontWeight.bold,
+    child: const Text(
+      "Finalizar pedido",
 
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+      style: TextStyle(
+        fontSize: 16,
+
+        fontWeight: FontWeight.bold,
+
+        color: Colors.white,
+      ),
+    ),
+  ),
+),
 
                                 const SizedBox(height: 10),
 

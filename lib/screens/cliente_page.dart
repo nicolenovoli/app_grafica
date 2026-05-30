@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/cliente_model.dart';
 import '../providers/cliente_provider.dart';
+import '../screens/resumo_pedido_page.dart';
 import '../widgets/footer_section.dart';
 
 class ClientePage extends StatefulWidget {
@@ -215,17 +216,21 @@ class _ClientePageState
                                 hint:
                                     "(00) 00000-0000",
 
-                                validator: (value) {
+                               validator: (value) {
 
-  if (value == null ||
-      value.isEmpty) {
+  if (value == null || value.isEmpty) {
 
     return "Informe o telefone";
   }
 
-  if (value.length < 14) {
+  final numeros = value.replaceAll(
+    RegExp(r'[^0-9]'),
+    '',
+  );
 
-    return "Telefone inválido";
+  if (numeros.length != 11) {
+
+    return "Telefone deve conter DDD + número";
   }
 
   return null;
@@ -258,97 +263,84 @@ class _ClientePageState
 
                               child: IconButton(
 
-                                onPressed:
-                                    () async {
+                                onPressed: () async {
 
-                                  if (telefoneController
-                                      .text
-                                      .isEmpty) {
+  final numeros = telefoneController.text.replaceAll(
+    RegExp(r'[^0-9]'),
+    '',
+  );
 
-                                    ScaffoldMessenger.of(
-                                      context,
-                                    ).showSnackBar(
+  if (numeros.length != 11) {
 
-                                      const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
 
-                                        content: Text(
-                                          "Informe o telefone",
-                                        ),
-                                      ),
-                                    );
+      const SnackBar(
 
-                                    return;
-                                  }
+        content: Text(
+          "Informe um telefone válido com DDD",
+        ),
+      ),
+    );
 
-                                  bool encontrou =
-                                      await clienteProvider
-                                          .buscarClientePorTelefone(
+    return;
+  }
 
-                                    telefoneController
-                                        .text,
-                                  );
+  bool encontrou =
+      await clienteProvider
+          .buscarClientePorTelefone(
 
-                                  if (!context
-                                      .mounted) {
-                                    return;
-                                  }
+    telefoneController.text,
+  );
 
-                                  // CLIENTE ENCONTRADO
-                                  if (encontrou &&
-                                      clienteProvider
-                                              .cliente !=
-                                          null) {
+  if (!context.mounted) {
+    return;
+  }
 
-                                    final cliente =
-                                        clienteProvider
-                                            .cliente!;
+  // CLIENTE ENCONTRADO
+  if (encontrou &&
+      clienteProvider.cliente != null) {
 
-                                    nomeController
-                                            .text =
-                                        cliente
-                                            .nome;
+    final cliente =
+        clienteProvider.cliente!;
 
-                                    emailController
-                                            .text =
-                                        cliente
-                                                .email ??
-                                            "";
+    nomeController.text =
+        cliente.nome;
 
-                                    tipoEntrega =
-                                        cliente
-                                            .tipoEntrega;
+    emailController.text =
+        cliente.email ?? "";
 
-                                    setState(() {});
+    tipoEntrega =
+        cliente.tipoEntrega;
 
-                                    ScaffoldMessenger.of(
-                                      context,
-                                    ).showSnackBar(
+    setState(() {});
 
-                                      const SnackBar(
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
 
-                                        content: Text(
-                                          "Cliente encontrado!",
-                                        ),
-                                      ),
-                                    );
-                                  }
+      const SnackBar(
 
-                                  // CLIENTE NÃO ENCONTRADO
-                                  else {
+        content: Text(
+          "Cliente encontrado!",
+        ),
+      ),
+    );
+  }
 
-                                    ScaffoldMessenger.of(
-                                      context,
-                                    ).showSnackBar(
+  // CLIENTE NÃO ENCONTRADO
+  else {
 
-                                      const SnackBar(
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
 
-                                        content: Text(
-                                          "Cliente não encontrado. Continue preenchendo para cadastrar.",
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
+      const SnackBar(
+
+        content: Text(
+          "Cliente não encontrado. Continue preenchendo para cadastrar.",
+        ),
+      ),
+    );
+  }
+},
 
                                 icon: const Icon(
 
@@ -819,19 +811,13 @@ CEP: ${cepController.text}
 
                                         if (sucesso) {
 
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-
-                                            const SnackBar(
-
-                                              content:
-                                                  Text(
-                                                "Cliente cadastrado com sucesso!",
-                                              ),
-                                            ),
-                                          );
-                                        }
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const ResumoPedidoPage(),
+    ),
+  );
+}
                                       },
 
                             style:
