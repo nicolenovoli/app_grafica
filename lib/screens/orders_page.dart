@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -9,66 +10,62 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-
-  final TextEditingController telefoneController =
-      TextEditingController();
+  final TextEditingController telefoneController = TextEditingController();
 
   bool pesquisou = false;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       backgroundColor: const Color(0xFFF7F6F2),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
 
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF7F6F2),
+          children: [
+            const SizedBox(height: 30),
 
-        elevation: 0,
+            const CustomAppBar(),
 
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
 
-          onPressed: () {
-            Navigator.pop(context);
-          },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  const SizedBox(height: 30),
+                  
+                  const Text(
+                    "Meus Pedidos",
+
+                    style: TextStyle(
+                      fontSize: 24,
+
+                      fontWeight: FontWeight.bold,
+
+                      color: Color(0xFF003B2F),
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  pesquisou ? _buildSemPedidos() : _buildIdentificacao(),
+                ],
+              ),
+            ),
+          ],
         ),
-
-        title: const Text(
-          "Meus Pedidos",
-
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-
-        centerTitle: true,
-      ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-
-        child: pesquisou
-            ? _buildSemPedidos()
-            : _buildIdentificacao(),
       ),
     );
   }
-
   // ==========================================
   // IDENTIFICAÇÃO
   // ==========================================
 
   Widget _buildIdentificacao() {
-
     return Column(
       children: [
-
         const SizedBox(height: 80),
 
         Container(
@@ -80,11 +77,7 @@ class _OrdersPageState extends State<OrdersPage> {
             borderRadius: BorderRadius.circular(60),
           ),
 
-          child: const Icon(
-            Icons.phone,
-            size: 48,
-            color: Color(0xFF0B4D2B),
-          ),
+          child: const Icon(Icons.phone, size: 48, color: Color(0xFF0B4D2B)),
         ),
 
         const SizedBox(height: 32),
@@ -92,10 +85,7 @@ class _OrdersPageState extends State<OrdersPage> {
         const Text(
           "Identifique-se",
 
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 16),
@@ -105,18 +95,13 @@ class _OrdersPageState extends State<OrdersPage> {
 
           textAlign: TextAlign.center,
 
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black54,
-            height: 1.5,
-          ),
+          style: TextStyle(fontSize: 15, color: Colors.black54, height: 1.5),
         ),
 
         const SizedBox(height: 40),
 
         Row(
           children: [
-
             Expanded(
               child: TextField(
                 controller: telefoneController,
@@ -124,13 +109,11 @@ class _OrdersPageState extends State<OrdersPage> {
                 keyboardType: TextInputType.phone,
 
                 inputFormatters: [
-
                   FilteringTextInputFormatter.digitsOnly,
 
                   LengthLimitingTextInputFormatter(11),
 
                   TelefoneInputFormatter(),
-
                 ],
 
                 decoration: InputDecoration(
@@ -139,15 +122,13 @@ class _OrdersPageState extends State<OrdersPage> {
                   filled: true,
                   fillColor: Colors.white,
 
-                  contentPadding:
-                      const EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 20,
-                    vertical: 20,
+                    vertical: 16,
                   ),
 
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(18),
 
                     borderSide: BorderSide.none,
                   ),
@@ -159,37 +140,28 @@ class _OrdersPageState extends State<OrdersPage> {
 
             GestureDetector(
               onTap: () {
-
                 if (telefoneController.text.length < 15) {
                   return;
                 }
 
                 setState(() {
-
                   // futuramente:
                   // buscar pedidos na API
 
                   pesquisou = true;
-
                 });
-
               },
 
               child: Container(
-                width: 68,
-                height: 68,
+                width: 60,
+                height: 60,
 
                 decoration: BoxDecoration(
                   color: const Color(0xFF0B4D2B),
-                  borderRadius:
-                      BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(18),
                 ),
 
-                child: const Icon(
-                  Icons.search,
-                  color: Colors.white,
-                  size: 30,
-                ),
+                child: const Icon(Icons.search, color: Colors.white, size: 30),
               ),
             ),
           ],
@@ -203,15 +175,13 @@ class _OrdersPageState extends State<OrdersPage> {
   // ==========================================
 
   Widget _buildSemPedidos() {
-
     return Column(
       children: [
-
         const SizedBox(height: 120),
 
         Container(
-          width: 120,
-          height: 120,
+          width: 90,
+          height: 90,
 
           decoration: BoxDecoration(
             color: const Color(0xFFEDE9E3),
@@ -220,7 +190,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
           child: const Icon(
             Icons.assignment_outlined,
-            size: 50,
+            size: 36,
             color: Color(0xFF5B7B63),
           ),
         ),
@@ -230,10 +200,7 @@ class _OrdersPageState extends State<OrdersPage> {
         const Text(
           "Nenhum pedido ainda",
 
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 16),
@@ -243,43 +210,48 @@ class _OrdersPageState extends State<OrdersPage> {
 
           textAlign: TextAlign.center,
 
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.black54,
-            height: 1.5,
-          ),
+          style: TextStyle(fontSize: 15, color: Colors.black54, height: 1.5),
         ),
 
         const SizedBox(height: 40),
 
         Row(
           children: [
-
             Expanded(
               child: OutlinedButton(
                 onPressed: () {
-
                   setState(() {
-
                     pesquisou = false;
 
                     telefoneController.clear();
-
                   });
-
                 },
 
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(0, 58),
+                style:
+                    OutlinedButton.styleFrom(
+                      minimumSize: const Size(0, 52),
 
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(18),
-                  ),
-                ),
+                      side: BorderSide(color: Colors.grey.shade300),
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ).copyWith(
+                      overlayColor: WidgetStateProperty.all(
+                        const Color(0xFF0B4D2B).withValues(alpha: 0.02),
+                      ),
+                    ),
 
                 child: const Text(
                   "Trocar telefone",
+
+                  style: TextStyle(
+                    color: Color(0xFF0B4D2B),
+
+                    fontWeight: FontWeight.bold,
+
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
@@ -293,23 +265,19 @@ class _OrdersPageState extends State<OrdersPage> {
                 },
 
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      const Color(0xFF0B4D2B),
+                  backgroundColor: const Color(0xFF0B4D2B),
 
                   minimumSize: const Size(0, 58),
 
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(18),
                   ),
                 ),
 
                 child: const Text(
                   "Ver catálogo",
 
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -324,29 +292,19 @@ class _OrdersPageState extends State<OrdersPage> {
 // FORMATADOR DE TELEFONE
 // ==========================================
 
-class TelefoneInputFormatter
-    extends TextInputFormatter {
-
+class TelefoneInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-
-    String numeros =
-        newValue.text.replaceAll(
-      RegExp(r'\D'),
-      '',
-    );
+    String numeros = newValue.text.replaceAll(RegExp(r'\D'), '');
 
     // CAMPO VAZIO
     if (numeros.isEmpty) {
-
       return const TextEditingValue(
         text: '',
-        selection: TextSelection.collapsed(
-          offset: 0,
-        ),
+        selection: TextSelection.collapsed(offset: 0),
       );
     }
 
@@ -356,43 +314,30 @@ class TelefoneInputFormatter
     textoFormatado += '(';
 
     if (numeros.length >= 2) {
-
-      textoFormatado +=
-          numeros.substring(0, 2);
+      textoFormatado += numeros.substring(0, 2);
 
       textoFormatado += ') ';
-    }
-    else {
-
+    } else {
       textoFormatado += numeros;
     }
 
     // Número
     if (numeros.length > 2) {
-
       if (numeros.length <= 7) {
-
-        textoFormatado +=
-            numeros.substring(2);
-
+        textoFormatado += numeros.substring(2);
       } else {
-
-        textoFormatado +=
-            numeros.substring(2, 7);
+        textoFormatado += numeros.substring(2, 7);
 
         textoFormatado += '-';
 
-        textoFormatado +=
-            numeros.substring(7);
+        textoFormatado += numeros.substring(7);
       }
     }
 
     return TextEditingValue(
       text: textoFormatado,
 
-      selection: TextSelection.collapsed(
-        offset: textoFormatado.length,
-      ),
+      selection: TextSelection.collapsed(offset: textoFormatado.length),
     );
   }
 }

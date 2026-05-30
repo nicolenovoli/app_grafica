@@ -4,676 +4,389 @@ import 'package:provider/provider.dart';
 import '../providers/carrinho_provider.dart';
 
 import '../widgets/custom_app_bar.dart';
-import '../widgets/footer_section.dart';
 
 class CarrinhoPage extends StatelessWidget {
-
-  const CarrinhoPage({
-    super.key,
-  });
+  const CarrinhoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    final carrinhoProvider =
-        Provider.of<CarrinhoProvider>(
-      context,
-    );
+    final carrinhoProvider = Provider.of<CarrinhoProvider>(context);
 
     return Scaffold(
-
-      backgroundColor:
-          const Color(0xFFF7F6F2),
+      backgroundColor: Colors.white,
 
       body: Column(
-
         children: [
-
-          const SizedBox(height: 30),
-
-          // =====================================
-          // CONTEÚDO + FOOTER
-          // =====================================
+          const CustomAppBar(),
 
           Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(26, 0, 26, 26),
 
-            child: LayoutBuilder(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
 
-              builder: (
-                context,
-                constraints,
-              ) {
+                  children: [
+                    const SizedBox(height: 30),
+                    const Text(
+                      "Seu Carrinho",
 
-                return SingleChildScrollView(
+                      style: TextStyle(
+                        fontSize: 24,
 
-                  child: ConstrainedBox(
+                        fontWeight: FontWeight.w700,
 
-                    constraints: BoxConstraints(
-                      minHeight:
-                          constraints.maxHeight,
+                        color: Color(0xFF003B2F),
+                      ),
                     ),
 
-                    child: IntrinsicHeight(
+                    const SizedBox(height: 40),
 
-                      child: Column(
+                    // =====================================
+                    // CARRINHO VAZIO
+                    // =====================================
+                    if (carrinhoProvider.itens.isEmpty)
+                      SizedBox(
+                        height: 500,
 
-                        children: [
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
 
-                          Padding(
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
 
-                            padding:
-                                const EdgeInsets.all(
-                              26,
-                            ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
 
-                            child: Column(
-
-                              crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
-
-                              children: [
-
-                                const Text(
-
-                                  "Seu Carrinho",
-
-                                  style: TextStyle(
-
-                                    fontSize: 42,
-
-                                    fontWeight:
-                                        FontWeight.bold,
-
-                                    color:
-                                        Color(0xFF003B2F),
-                                  ),
+                                  shape: BoxShape.circle,
                                 ),
 
-                                const SizedBox(
-                                  height: 40,
+                                child: const Icon(
+                                  Icons.shopping_bag_outlined,
+
+                                  size: 60,
+
+                                  color: Color(0xFF4F735E),
                                 ),
+                              ),
 
-                                // =====================================
-                                // CARRINHO VAZIO
-                                // =====================================
+                              const SizedBox(height: 30),
 
-                                if (carrinhoProvider
-                                    .itens
-                                    .isEmpty)
+                              const Text(
+                                "Carrinho vazio",
 
-                                  SizedBox(
+                                style: TextStyle(
+                                  fontSize: 34,
 
-                                    height: 500,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
 
-                                    child: Center(
+                              const SizedBox(height: 14),
 
-                                      child: Column(
+                              Text(
+                                "Adicione produtos do nosso catálogo para começar.",
 
-                                        mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .center,
+                                style: TextStyle(
+                                  fontSize: 20,
 
-                                        children: [
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
 
-                                          Container(
+                              const SizedBox(height: 40),
 
-                                            width: 120,
-                                            height: 120,
+                              SizedBox(
+                                width: 240,
+                                height: 65,
 
-                                            decoration:
-                                                BoxDecoration(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
 
-                                              color:
-                                                  Colors.grey
-                                                      .shade200,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF0B4D2B),
 
-                                              shape:
-                                                  BoxShape.circle,
-                                            ),
-
-                                            child: const Icon(
-
-                                              Icons.shopping_bag_outlined,
-
-                                              size: 60,
-
-                                              color:
-                                                  Color(0xFF4F735E),
-                                            ),
-                                          ),
-
-                                          const SizedBox(
-                                            height: 30,
-                                          ),
-
-                                          const Text(
-
-                                            "Carrinho vazio",
-
-                                            style: TextStyle(
-
-                                              fontSize: 34,
-
-                                              fontWeight:
-                                                  FontWeight.bold,
-                                            ),
-                                          ),
-
-                                          const SizedBox(
-                                            height: 14,
-                                          ),
-
-                                          Text(
-
-                                            "Adicione produtos do nosso catálogo para começar.",
-
-                                            style: TextStyle(
-
-                                              fontSize: 20,
-
-                                              color:
-                                                  Colors.grey.shade700,
-                                            ),
-                                          ),
-
-                                          const SizedBox(
-                                            height: 40,
-                                          ),
-
-                                          SizedBox(
-
-                                            width: 240,
-                                            height: 65,
-
-                                            child: ElevatedButton(
-
-                                              onPressed: () {
-
-                                                Navigator.pop(
-                                                  context,
-                                                );
-                                              },
-
-                                              style:
-                                                  ElevatedButton.styleFrom(
-
-                                                backgroundColor:
-                                                    const Color(
-                                                  0xFF0B4D2B,
-                                                ),
-
-                                                shape:
-                                                    RoundedRectangleBorder(
-
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    22,
-                                                  ),
-                                                ),
-                                              ),
-
-                                              child: const Text(
-
-                                                "Ver catálogo",
-
-                                                style: TextStyle(
-
-                                                  fontSize: 22,
-
-                                                  fontWeight:
-                                                      FontWeight.bold,
-
-                                                  color:
-                                                      Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(22),
                                     ),
                                   ),
 
-                                // =====================================
-                                // COM ITENS
-                                // =====================================
+                                  child: const Text(
+                                    "Ver catálogo",
 
-                                if (carrinhoProvider
-                                    .itens
-                                    .isNotEmpty)
+                                    style: TextStyle(
+                                      fontSize: 22,
 
-                                  Row(
+                                      fontWeight: FontWeight.bold,
 
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-
-                                    children: [
-
-                                      // =================================
-                                      // LISTA
-                                      // =================================
-
-                                      Expanded(
-
-                                        flex: 3,
-
-                                        child: ListView.builder(
-
-                                          shrinkWrap: true,
-
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-
-                                          itemCount:
-                                              carrinhoProvider
-                                                  .itens
-                                                  .length,
-
-                                          itemBuilder:
-                                              (
-                                            context,
-                                            index,
-                                          ) {
-
-                                            final item =
-                                                carrinhoProvider
-                                                    .itens[index];
-
-                                            return Container(
-
-                                              margin:
-                                                  const EdgeInsets.only(
-                                                bottom: 24,
-                                              ),
-
-                                              padding:
-                                                  const EdgeInsets.all(
-                                                24,
-                                              ),
-
-                                              decoration:
-                                                  BoxDecoration(
-
-                                                color:
-                                                    Colors.white,
-
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  28,
-                                                ),
-
-                                                border: Border.all(
-                                                  color: Colors.grey
-                                                      .shade300,
-                                                ),
-                                              ),
-
-                                              child: Row(
-
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-
-                                                children: [
-
-                                                  ClipRRect(
-
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      18,
-                                                    ),
-
-                                                    child: Image.asset(
-
-                                                      item.imagemProduto,
-
-                                                      width: 130,
-                                                      height: 130,
-
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-
-                                                  const SizedBox(
-                                                    width: 24,
-                                                  ),
-
-                                                  Expanded(
-
-                                                    child: Column(
-
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-
-                                                      children: [
-
-                                                        Text(
-
-                                                          item.nomeProduto,
-
-                                                          style:
-                                                              const TextStyle(
-
-                                                            fontSize: 30,
-
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                          ),
-                                                        ),
-
-                                                        const SizedBox(
-                                                          height: 16,
-                                                        ),
-
-                                                        Text(
-
-                                                          item.observacoes,
-
-                                                          style:
-                                                              TextStyle(
-
-                                                            fontSize: 18,
-
-                                                            color: Colors
-                                                                .grey
-                                                                .shade700,
-
-                                                            height: 1.6,
-                                                          ),
-                                                        ),
-
-                                                        const SizedBox(
-                                                          height: 18,
-                                                        ),
-
-                                                        Text(
-
-                                                          "Qtd: ${item.quantidade}",
-
-                                                          style:
-                                                              const TextStyle(
-
-                                                            fontSize: 20,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-
-                                                  Column(
-
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .end,
-
-                                                    children: [
-
-                                                      IconButton(
-
-                                                        onPressed: () {
-
-                                                          carrinhoProvider
-                                                              .removerItem(
-                                                            item,
-                                                          );
-                                                        },
-
-                                                        icon: const Icon(
-
-                                                          Icons.delete_outline,
-
-                                                          color:
-                                                              Color(0xFF4F735E),
-
-                                                          size: 30,
-                                                        ),
-                                                      ),
-
-                                                      const SizedBox(
-                                                        height: 40,
-                                                      ),
-
-                                                      Text(
-
-                                                        "R\$ ${item.subtotal.toStringAsFixed(2).replaceAll(".", ",")}",
-
-                                                        style:
-                                                            const TextStyle(
-
-                                                          fontSize: 28,
-
-                                                          fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-
-                                                          color: Color(
-                                                            0xFF003B2F,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-
-                                      // =================================
-                                      // RESUMO
-                                      // =================================
-
-                                      Container(
-
-                                        width: 360,
-
-                                        padding:
-                                            const EdgeInsets.all(
-                                          24,
-                                        ),
-
-                                        decoration:
-                                            BoxDecoration(
-
-                                          color: Colors.white,
-
-                                          borderRadius:
-                                              BorderRadius.circular(
-                                            28,
-                                          ),
-
-                                          border: Border.all(
-                                            color:
-                                                Colors.grey.shade300,
-                                          ),
-                                        ),
-
-                                        child: Column(
-
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
-
-                                          children: [
-
-                                            const Text(
-
-                                              "Resumo",
-
-                                              style: TextStyle(
-
-                                                fontSize: 30,
-
-                                                fontWeight:
-                                                    FontWeight.bold,
-                                              ),
-                                            ),
-
-                                            const SizedBox(
-                                              height: 40,
-                                            ),
-
-                                            Row(
-
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-
-                                              children: [
-
-                                                const Text(
-
-                                                  "Total",
-
-                                                  style: TextStyle(
-                                                    fontSize: 24,
-                                                  ),
-                                                ),
-
-                                                Text(
-
-                                                  "R\$ ${carrinhoProvider.total.toStringAsFixed(2).replaceAll(".", ",")}",
-
-                                                  style:
-                                                      const TextStyle(
-
-                                                    fontSize: 36,
-
-                                                    fontWeight:
-                                                        FontWeight.bold,
-
-                                                    color: Color(
-                                                      0xFF003B2F,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                            const SizedBox(
-                                              height: 40,
-                                            ),
-
-                                            SizedBox(
-
-                                              width: double.infinity,
-                                              height: 70,
-
-                                              child: ElevatedButton(
-
-                                                onPressed: () {},
-
-                                                style:
-                                                    ElevatedButton.styleFrom(
-
-                                                  backgroundColor:
-                                                      const Color(
-                                                    0xFF0B4D2B,
-                                                  ),
-
-                                                  shape:
-                                                      RoundedRectangleBorder(
-
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      22,
-                                                    ),
-                                                  ),
-                                                ),
-
-                                                child: const Text(
-
-                                                  "Finalizar pedido",
-
-                                                  style: TextStyle(
-
-                                                    fontSize: 24,
-
-                                                    fontWeight:
-                                                        FontWeight.bold,
-
-                                                    color:
-                                                        Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-
-                                            const SizedBox(
-                                              height: 18,
-                                            ),
-
-                                            SizedBox(
-
-                                              width: double.infinity,
-                                              height: 70,
-
-                                              child: OutlinedButton(
-
-                                                onPressed: () {
-
-                                                  Navigator.pop(
-                                                    context,
-                                                  );
-                                                },
-
-                                                style:
-                                                    OutlinedButton.styleFrom(
-
-                                                  shape:
-                                                      RoundedRectangleBorder(
-
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      22,
-                                                    ),
-                                                  ),
-                                                ),
-
-                                                child: const Text(
-
-                                                  "Continuar comprando",
-
-                                                  style: TextStyle(
-
-                                                    fontSize: 22,
-
-                                                    fontWeight:
-                                                        FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                      color: Colors.white,
+                                    ),
                                   ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    // =====================================
+                    // COM ITENS
+                    // =====================================
+                    if (carrinhoProvider.itens.isNotEmpty)
+                      Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+
+                            physics: const NeverScrollableScrollPhysics(),
+
+                            itemCount: carrinhoProvider.itens.length,
+
+                            itemBuilder: (context, index) {
+                              final item = carrinhoProvider.itens[index];
+
+                              return Container(
+                                margin: const EdgeInsets.only(bottom: 24),
+
+                                padding: const EdgeInsets.all(18),
+
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+
+                                  borderRadius: BorderRadius.circular(20),
+
+                                  border: Border.all(
+                                    color: Colors.grey.shade300,
+                                  ),
+                                ),
+
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+
+                                      child: IconButton(
+                                        onPressed: () {
+                                          carrinhoProvider.removerItem(item);
+                                        },
+
+                                        icon: const Icon(
+                                          Icons.delete_outline,
+
+                                          color: Color(0xFF4F735E),
+                                        ),
+                                      ),
+                                    ),
+
+                                    Center(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+
+                                        child: Image.asset(
+                                          item.imagemProduto,
+
+                                          height: 180,
+
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 20),
+
+                                    Text(
+                                      item.nomeProduto,
+
+                                      style: const TextStyle(
+                                        fontSize: 22,
+
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 16),
+
+                                    Text(
+                                      item.observacoes,
+
+                                      style: TextStyle(
+                                        fontSize: 15,
+
+                                        color: Colors.grey.shade700,
+
+                                        height: 1.6,
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 16),
+
+                                    Text(
+                                      "Quantidade: ${item.quantidade}",
+
+                                      style: const TextStyle(fontSize: 15),
+                                    ),
+
+                                    const SizedBox(height: 20),
+
+                                    Align(
+                                      alignment: Alignment.centerRight,
+
+                                      child: Text(
+                                        "R\$ ${item.subtotal.toStringAsFixed(2).replaceAll(".", ",")}",
+
+                                        style: const TextStyle(
+                                          fontSize: 20,
+
+                                          fontWeight: FontWeight.bold,
+
+                                          color: Color(0xFF003B2F),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          Container(
+                            width: double.infinity,
+
+                            padding: const EdgeInsets.all(24),
+
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+
+                              borderRadius: BorderRadius.circular(28),
+
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+
+                              children: [
+                                const Text(
+                                  "Resumo",
+
+                                  style: TextStyle(
+                                    fontSize: 22,
+
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 30),
+
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+
+                                  children: [
+                                    const Text(
+                                      "Total",
+
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+
+                                    Text(
+                                      "R\$ ${carrinhoProvider.total.toStringAsFixed(2).replaceAll(".", ",")}",
+
+                                      style: const TextStyle(
+                                        fontSize: 22,
+
+                                        fontWeight: FontWeight.w700,
+
+                                        color: Color(0xFF003B2F),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 30),
+
+                                SizedBox(
+                                  width: double.infinity,
+
+                                  height: 56,
+
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF0B4D2B),
+
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(22),
+                                      ),
+                                    ),
+
+                                    child: const Text(
+                                      "Finalizar pedido",
+
+                                      style: TextStyle(
+                                        fontSize: 16,
+
+                                        fontWeight: FontWeight.bold,
+
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                const SizedBox(height: 10),
+
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 56,
+
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+
+                                    style: ButtonStyle(
+                                      overlayColor: WidgetStateProperty.all(
+                                        Colors.black.withValues(alpha: 0.02),
+                                      ),
+
+                                      shadowColor: WidgetStateProperty.all(
+                                        Colors.transparent,
+                                      ),
+                                    ),
+
+                                    child: const Text(
+                                      "Continuar comprando",
+
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF0B4D2B),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-
-                          // =====================================
-                          // FOOTER
-                          // =====================================
-
-                          const Spacer(),
-
-                          const FooterSection(),
                         ],
                       ),
-                    ),
-                  ),
-                );
-              },
+                  ],
+                ),
+              ),
             ),
           ),
         ],
