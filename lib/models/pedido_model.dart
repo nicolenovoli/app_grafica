@@ -8,12 +8,24 @@ class PedidoModel {
 
   final double valorTotal;
 
+  final String? status;
+
+  final String? dataPedido;
+
   final List<ItemPedidoModel> itens;
 
   PedidoModel({
+
     this.id,
+
     required this.clienteId,
+
     required this.valorTotal,
+
+    this.status,
+
+    this.dataPedido,
+
     required this.itens,
   });
 
@@ -29,6 +41,10 @@ class PedidoModel {
 
       valorTotal:
           json["valor_total"].toDouble(),
+
+      status: json["status"],
+
+      dataPedido: json["data_pedido"],
 
       itens: (json["itens"] as List)
 

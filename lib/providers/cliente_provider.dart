@@ -65,19 +65,25 @@ class ClienteProvider
 
       return cliente != null;
 
-    } catch (e) {
+    }catch (e) {
 
-      debugPrint(
-        "ERRO CLIENTE: $e",
-      );
+  debugPrint("ERRO CLIENTE => $e");
 
-      carregando = false;
+  carregando = false;
 
-      notifyListeners();
+  notifyListeners();
 
-      return false;
-    }
-  }
+  return false;
+}
+  } 
+
+  void atualizarCliente(
+  ClienteModel clienteAtualizado,
+) {
+  cliente = clienteAtualizado;
+
+  notifyListeners();
+}
 
   void limparCliente() {
 

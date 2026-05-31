@@ -7,7 +7,7 @@ import '../models/cliente_model.dart';
 class ClienteService {
 
   final String baseUrl =
-      "http://10.0.2.2:8000";
+    "http://localhost:8000";
 
   Future<ClienteModel?>
       buscarClientePorTelefone(

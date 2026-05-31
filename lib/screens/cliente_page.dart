@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 import '../models/cliente_model.dart';
 import '../providers/cliente_provider.dart';
@@ -207,16 +208,22 @@ class _ClientePageState
                           children: [
 
                             Expanded(
+child: TextFormField(
 
-                              child: _campoTexto(
+  controller: telefoneController,
 
-                                controller:
-                                    telefoneController,
+  keyboardType: TextInputType.phone,
 
-                                hint:
-                                    "(00) 00000-0000",
+  inputFormatters: [
 
-                               validator: (value) {
+    FilteringTextInputFormatter.digitsOnly,
+
+    LengthLimitingTextInputFormatter(11),
+
+    TelefoneInputFormatter(),
+  ],
+
+  validator: (value) {
 
   if (value == null || value.isEmpty) {
 
@@ -285,12 +292,15 @@ class _ClientePageState
     return;
   }
 
-  bool encontrou =
-      await clienteProvider
-          .buscarClientePorTelefone(
 
-    telefoneController.text,
-  );
+bool encontrou =
+    await clienteProvider
+        .buscarClientePorTelefone(
+  telefoneController.text.replaceAll(
+    RegExp(r'[^0-9]'),
+    '',
+  ),
+);
 
   if (!context.mounted) {
     return;
@@ -747,19 +757,13 @@ class _ClientePageState
 
                           child: ElevatedButton(
 
-                            onPressed:
-                                clienteProvider
-                                        .carregando
-                                    ? null
-                                    : () async {
+                            onPressed: () async {
 
-                                        if (!_formKey
-                                            .currentState!
-                                            .validate()) {
-                                          return;
-                                        }
+  if (!_formKey.currentState!.validate()) {
+    return;
+  }
 
-                                        String enderecoCompleto =
+String enderecoCompleto =
                                             """
 
 Rua: ${ruaController.text}
@@ -781,9 +785,10 @@ CEP: ${cepController.text}
                                                 nomeController
                                                     .text,
 
-                                            telefone:
-                                                telefoneController
-                                                    .text,
+                                            telefone: telefoneController.text.replaceAll(
+  RegExp(r'[^0-9]'),
+  '',
+),
 
                                             email:
                                                 emailController
@@ -1061,6 +1066,77 @@ CEP: ${cepController.text}
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TelefoneInputFormatter extends TextInputFormatter {
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+
+    String numeros =
+        newValue.text.replaceAll(
+      RegExp(r'\D'),
+      '',
+    );
+
+    if (numeros.isEmpty) {
+
+      return const TextEditingValue(
+        text: '',
+        selection: TextSelection.collapsed(
+          offset: 0,
+        ),
+      );
+    }
+
+    String textoFormatado = '';
+
+    textoFormatado += '(';
+
+    if (numeros.length >= 2) {
+
+      textoFormatado +=
+          numeros.substring(0, 2);
+
+      textoFormatado += ') ';
+    } else {
+
+      textoFormatado += numeros;
+    }
+
+    if (numeros.length > 2) {
+
+      if (numeros.length <= 7) {
+
+        textoFormatado +=
+            numeros.substring(2);
+
+      } else {
+
+        textoFormatado +=
+            numeros.substring(2, 7);
+
+        textoFormatado += '-';
+
+        textoFormatado +=
+            numeros.substring(7);
+      }
+    }
+
+    return TextEditingValue(
+
+      text: textoFormatado,
+
+      selection:
+          TextSelection.collapsed(
+        offset:
+            textoFormatado.length,
       ),
     );
   }

@@ -82,16 +82,6 @@ class ItemPedidoModel {
 
       "produto_id": produtoId,
 
-      // =====================================
-      // NOVOS CAMPOS
-      // =====================================
-
-      "nome_produto": nomeProduto,
-
-      "imagem_produto": imagemProduto,
-
-      // =====================================
-
       "quantidade": quantidade,
 
       "valor_unitario": valorUnitario,

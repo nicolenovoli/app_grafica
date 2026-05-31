@@ -117,7 +117,7 @@ class _OrdersPageState extends State<OrdersPage> {
                 ],
 
                 decoration: InputDecoration(
-                  hintText: "(DD) 9XXXX-YYYY",
+                  hintText: "(00) 00000-0000",
 
                   filled: true,
                   fillColor: Colors.white,
