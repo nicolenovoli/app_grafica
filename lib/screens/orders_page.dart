@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 
+import 'package:provider/provider.dart';
+
+import '../models/pedido_model.dart';
+import '../providers/pedido_provider.dart';
+
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
 
@@ -13,6 +18,42 @@ class _OrdersPageState extends State<OrdersPage> {
   final TextEditingController telefoneController = TextEditingController();
 
   bool pesquisou = false;
+
+  List<PedidoModel> pedidos = [];
+
+bool carregando = false;
+  
+
+Future<void> buscarPedidos() async {
+
+  String telefone =
+      telefoneController.text
+          .replaceAll(RegExp(r'\D'), '');
+
+  setState(() {
+    carregando = true;
+  });
+
+  final provider =
+      Provider.of<PedidoProvider>(
+    context,
+    listen: false,
+  );
+
+  await provider.buscarPedidosPorTelefone(
+    telefone,
+  );
+
+  setState(() {
+
+    pedidos = provider.pedidos;
+
+    carregando = false;
+
+    pesquisou = true;
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +91,25 @@ class _OrdersPageState extends State<OrdersPage> {
 
                   const SizedBox(height: 30),
 
-                  pesquisou ? _buildSemPedidos() : _buildIdentificacao(),
+                  !pesquisou
+    ? _buildIdentificacao()
+    : carregando
+        ? const Center(
+            child: Padding(
+              padding: EdgeInsets.all(40),
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : pedidos.isEmpty
+            ? _buildSemPedidos()
+            : _buildListaPedidos(),
                 ],
               ),
             ),
           ],
         ),
       ),
+      
     );
   }
   // ==========================================
@@ -139,18 +192,14 @@ class _OrdersPageState extends State<OrdersPage> {
             const SizedBox(width: 12),
 
             GestureDetector(
-              onTap: () {
-                if (telefoneController.text.length < 15) {
-                  return;
-                }
+              onTap: () async {
 
-                setState(() {
-                  // futuramente:
-                  // buscar pedidos na API
+  if (telefoneController.text.length < 15) {
+    return;
+  }
 
-                  pesquisou = true;
-                });
-              },
+  await buscarPedidos();
+},
 
               child: Container(
                 width: 60,
@@ -286,6 +335,87 @@ class _OrdersPageState extends State<OrdersPage> {
       ],
     );
   }
+
+  Widget _buildListaPedidos() {
+
+    return Column(
+
+      children: [
+
+        const SizedBox(height: 20),
+
+        ...pedidos.map(
+
+          (pedido) {
+
+            return Container(
+
+              margin:
+                  const EdgeInsets.only(
+                bottom: 16,
+              ),
+
+              padding:
+                  const EdgeInsets.all(
+                20,
+              ),
+
+              decoration:
+                  BoxDecoration(
+
+                color: Colors.white,
+
+                borderRadius:
+                    BorderRadius.circular(
+                  20,
+                ),
+              ),
+
+              child: Column(
+
+  crossAxisAlignment:
+      CrossAxisAlignment.start,
+
+  children: [
+
+    Text(
+      pedido.itens.first.nomeProduto,
+      style: const TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
+    const SizedBox(height: 12),
+
+    Text(
+      "Quantidade: ${pedido.itens.first.quantidade}",
+    ),
+
+    const SizedBox(height: 8),
+
+    Text(
+      "Opções: ${pedido.itens.first.observacoes}",
+    ),
+
+    const SizedBox(height: 8),
+
+    Text(
+      "Valor: R\$ ${pedido.valorTotal.toStringAsFixed(2)}",
+    ),
+
+    const SizedBox(height: 8),
+
+    Text(
+      "Data: ${pedido.dataPedido?.split('T').first ?? ''}",
+    ),
+  ],
+)
+            );
+          },
+        ),
+      ],
+    );  }
 }
 
 // ==========================================
