@@ -371,7 +371,7 @@ class ResumoPedidoPage extends StatelessWidget {
                       Text(
                         cliente.tipoEntrega ==
                                 "retirada"
-                            ? "Retirar na Gráfica Pergaminho"
+                            ? "Retirar na Gráfica Pergaminho\nAv. Alexandre Rasgulaeff, 2733\nJardim Santa Alice\nMaringá PR"
                             : cliente.endereco ??
                                 "",
                       ),

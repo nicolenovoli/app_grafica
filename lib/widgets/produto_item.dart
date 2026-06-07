@@ -140,7 +140,7 @@ class _ProdutoItemState
                   child: Image.asset(
 
                     widget.produto.nome == "Cartões de Visita"
-    ? "assets/cartao1.png"
+    ? "assets/cartao2.webp"
 
       : widget.produto.nome == "Panfletos"
           ? "assets/panfletos.jpg"
@@ -160,7 +160,7 @@ class _ProdutoItemState
 
                                     : widget.produto.nome ==
                                             "Receituário Médico"
-                                        ? "assets/receituario.jpeg"
+                                        ? "assets/receituario1.png"
           
 
 

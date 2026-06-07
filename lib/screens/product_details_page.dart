@@ -91,7 +91,7 @@ class _ProductDetailsPageState
     if (widget.produto.nome ==
         "Cartões de Visita") {
 
-      return "assets/cartao1.png";
+      return "assets/cartao2.webp";
     }
 
     if (widget.produto.nome ==
@@ -127,7 +127,7 @@ class _ProductDetailsPageState
     if (widget.produto.nome ==
         "Receituário Médico") {
 
-      return "assets/receituario.jpeg";
+      return "assets/receituario1.png";
     }
 
     return "assets/default.png";
