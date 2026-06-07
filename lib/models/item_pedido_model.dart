@@ -7,7 +7,6 @@ class ItemPedidoModel {
   // =====================================
 
   final String nomeProduto;
-
   final String imagemProduto;
 
   // =====================================
@@ -29,7 +28,6 @@ class ItemPedidoModel {
     // =====================================
 
     required this.nomeProduto,
-
     required this.imagemProduto,
 
     // =====================================
@@ -58,8 +56,7 @@ class ItemPedidoModel {
       nomeProduto:
           json["nome_produto"] ?? "",
 
-      imagemProduto:
-          json["imagem_produto"] ?? "",
+          imagemProduto: json["imagem_produto"] ?? "",
 
       // =====================================
 
@@ -77,18 +74,18 @@ class ItemPedidoModel {
   }
 
   Map<String, dynamic> toJson() {
+  return {
+    "produto_id": produtoId,
 
-    return {
+    "nome_produto": nomeProduto,
 
-      "produto_id": produtoId,
+    "quantidade": quantidade,
 
-      "quantidade": quantidade,
+    "valor_unitario": valorUnitario,
 
-      "valor_unitario": valorUnitario,
+    "subtotal": subtotal,
 
-      "subtotal": subtotal,
-
-      "observacoes": observacoes,
-    };
-  }
+    "observacoes": observacoes,
+  };
+}
 }
