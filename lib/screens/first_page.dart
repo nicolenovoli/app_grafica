@@ -16,6 +16,7 @@ class FirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return const Scaffold(
+      backgroundColor: Colors.white,
 
       body: SingleChildScrollView(
 
@@ -27,7 +28,9 @@ class FirstPage extends StatelessWidget {
 
           children: [
 
-            CustomAppBar(),
+            CustomAppBar(
+              paginaAtual: "catalogo",
+            ),
 
             SizedBox(height: 20),
 

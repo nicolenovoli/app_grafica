@@ -12,46 +12,31 @@ import 'cliente_page.dart';
 import 'first_page.dart';
 
 class ResumoPedidoPage extends StatelessWidget {
-
   const ResumoPedidoPage({super.key});
 
-  static const String chavePix =
-      "pix@graficapergaminho.com.br";
-
+  static const String chavePix = "pix@graficapergaminho.com.br";
 
   @override
   Widget build(BuildContext context) {
+    final carrinhoProvider = Provider.of<CarrinhoProvider>(context);
 
-    final carrinhoProvider =
-        Provider.of<CarrinhoProvider>(context);
+    final clienteProvider = Provider.of<ClienteProvider>(context);
 
-    final clienteProvider =
-        Provider.of<ClienteProvider>(context);
+    final pedidoProvider = Provider.of<PedidoProvider>(context);
 
-    final pedidoProvider =
-        Provider.of<PedidoProvider>(context);
-
-    final cliente =
-        clienteProvider.cliente;
+    final cliente = clienteProvider.cliente;
 
     if (cliente == null) {
       return const Scaffold(
-        body: Center(
-          child: Text(
-            "Cliente não encontrado",
-          ),
-        ),
+        body: Center(child: Text("Cliente não encontrado")),
       );
     }
 
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF7F6F2,
-      ),
+      
 
       appBar: AppBar(
-        backgroundColor:
-            Colors.transparent,
+        backgroundColor: Colors.white,
 
         elevation: 0,
 
@@ -63,9 +48,7 @@ class ResumoPedidoPage extends StatelessWidget {
           ),
         ),
 
-        iconTheme: const IconThemeData(
-          color: Color(0xFF0B4D2B),
-        ),
+        iconTheme: const IconThemeData(color: Color(0xFF0B4D2B)),
       ),
 
       body: SingleChildScrollView(
@@ -73,144 +56,105 @@ class ResumoPedidoPage extends StatelessWidget {
 
         child: Center(
           child: ConstrainedBox(
-            constraints:
-                const BoxConstraints(
-              maxWidth: 900,
-            ),
+            constraints: const BoxConstraints(maxWidth: 900),
 
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-
                 // ==========================
                 // PRODUTOS
                 // ==========================
-
                 Container(
-                  padding:
-                      const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(24),
 
                   decoration: BoxDecoration(
                     color: Colors.white,
 
-                    borderRadius:
-                        BorderRadius.circular(
-                      20,
-                    ),
+                    borderRadius: BorderRadius.circular(20),
                   ),
 
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
                       const Text(
                         "Resumo do pedido",
 
                         style: TextStyle(
                           fontSize: 22,
 
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
 
-                      ...carrinhoProvider.itens.map(
-                        (item) {
+                      ...carrinhoProvider.itens.map((item) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 18),
 
-                          return Padding(
-                            padding:
-                                const EdgeInsets.only(
-                              bottom: 18,
-                            ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
 
-                            child: Row(
-                              children: [
+                                  children: [
+                                    Text(
+                                      "${item.quantidade}x ${item.nomeProduto}",
+                                    ),
 
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .start,
+                                    const SizedBox(height: 4),
 
-                                    children: [
+                                    Text(
+                                      item.observacoes,
 
-                                      Text(
-                                        "${item.quantidade}x ${item.nomeProduto}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+
+                                        color: Colors.grey,
                                       ),
-
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-
-                                      Text(
-                                        item.observacoes,
-
-                                        style:
-                                            const TextStyle(
-                                          fontSize: 12,
-
-                                          color:
-                                              Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
+                              ),
 
-                                Text(
-                                  "R\$ ${item.subtotal.toStringAsFixed(2).replaceAll(".", ",")}",
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                              Text(
+                                "R\$ ${item.subtotal.toStringAsFixed(2).replaceAll(".", ",")}",
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
 
                       const Divider(),
 
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
 
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                         children: [
-
                           const Text(
                             "TOTAL",
 
                             style: TextStyle(
                               fontSize: 20,
 
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
 
                           Text(
                             "R\$ ${carrinhoProvider.total.toStringAsFixed(2).replaceAll(".", ",")}",
 
-                            style:
-                                const TextStyle(
+                            style: const TextStyle(
                               fontSize: 24,
 
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
 
-                              color: Color(
-                                0xFF0B4D2B,
-                              ),
+                              color: Color(0xFF0B4D2B),
                             ),
                           ),
                         ],
@@ -219,351 +163,229 @@ class ResumoPedidoPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
 
                 // ==========================
                 // CLIENTE
                 // ==========================
-
                 Container(
-                  padding:
-                      const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(24),
 
                   decoration: BoxDecoration(
                     color: Colors.white,
 
-                    borderRadius:
-                        BorderRadius.circular(
-                      20,
-                    ),
+                    borderRadius: BorderRadius.circular(20),
                   ),
 
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                         children: [
-
                           const Text(
                             "Dados do cliente",
 
                             style: TextStyle(
                               fontSize: 20,
 
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
 
                           TextButton.icon(
                             onPressed: () {
-
                               Navigator.push(
                                 context,
 
                                 MaterialPageRoute(
-                                  builder: (_) =>
-                                      const ClientePage(),
+                                  builder: (_) => const ClientePage(),
                                 ),
                               );
                             },
 
-                            icon: const Icon(
-                              Icons.edit,
-                            ),
+                            icon: const Icon(Icons.edit),
 
-                            label: const Text(
-                              "Editar",
-                            ),
+                            label: const Text("Editar"),
                           ),
                         ],
                       ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
 
-                      Text(
-                        cliente.nome,
-                      ),
+                      Text(cliente.nome),
 
-                      const SizedBox(
-                        height: 8,
-                      ),
+                      const SizedBox(height: 8),
 
-                      Text(
-                        cliente.telefone,
-                      ),
+                      Text(cliente.telefone),
 
-                      if (cliente.email !=
-                              null &&
-                          cliente.email!
-                              .isNotEmpty)
+                      if (cliente.email != null && cliente.email!.isNotEmpty)
                         Padding(
-                          padding:
-                              const EdgeInsets.only(
-                            top: 8,
-                          ),
+                          padding: const EdgeInsets.only(top: 8),
 
-                          child: Text(
-                            cliente.email!,
-                          ),
+                          child: Text(cliente.email!),
                         ),
                     ],
                   ),
                 ),
 
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
 
                 // ==========================
                 // ENTREGA
                 // ==========================
-
                 Container(
-                  padding:
-                      const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(24),
 
                   decoration: BoxDecoration(
                     color: Colors.white,
 
-                    borderRadius:
-                        BorderRadius.circular(
-                      20,
-                    ),
+                    borderRadius: BorderRadius.circular(20),
                   ),
 
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
                       Text(
-                        cliente.tipoEntrega ==
-                                "retirada"
+                        cliente.tipoEntrega == "retirada"
                             ? "Retirada"
                             : "Entrega",
 
-                        style:
-                            const TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
 
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      const SizedBox(height: 15),
 
                       Text(
-                        cliente.tipoEntrega ==
-                                "retirada"
+                        cliente.tipoEntrega == "retirada"
                             ? "Retirar na Gráfica Pergaminho\nAv. Alexandre Rasgulaeff, 2733\nJardim Santa Alice\nMaringá PR"
-                            : cliente.endereco ??
-                                "",
+                            : cliente.endereco ?? "",
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(
-                  height: 35,
-                ),
+                const SizedBox(height: 35),
 
                 // ==========================
                 // PIX
                 // ==========================
-
                 SizedBox(
                   width: double.infinity,
                   height: 58,
 
                   child: OutlinedButton.icon(
                     onPressed: () async {
-
                       await Clipboard.setData(
-                        const ClipboardData(
-                          text: chavePix,
-                        ),
+                        const ClipboardData(text: chavePix),
                       );
 
                       if (!context.mounted) {
                         return;
                       }
 
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(
-
-                        const SnackBar(
-                          content: Text(
-                            "Chave PIX copiada",
-                          ),
-                        ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Chave PIX copiada")),
                       );
                     },
 
-                    icon: const Icon(
-                      Icons.pix,
-                    ),
+                    icon: const Icon(Icons.pix),
 
-                    label: const Text(
-                      "Copiar chave PIX",
-                    ),
+                    label: const Text("Copiar chave PIX"),
                   ),
                 ),
 
-                const SizedBox(
-                  height: 18,
-                ),
+                const SizedBox(height: 18),
 
                 // ==========================
                 // ENVIAR PEDIDO
                 // ==========================
-
                 SizedBox(
                   width: double.infinity,
                   height: 60,
 
                   child: ElevatedButton.icon(
-                    onPressed:
-                        pedidoProvider
-                                .carregando
-                            ? null
-                            : () async {
-                              final pedido =
-    PedidoModel(
+                    onPressed: pedidoProvider.carregando
+                        ? null
+                        : () async {
+                            final pedido = PedidoModel(
+                              clienteId: cliente.id!,
 
-  clienteId: cliente.id!,
+                              valorTotal: carrinhoProvider.total,
 
-  valorTotal:
-      carrinhoProvider.total,
+                              itens: carrinhoProvider.itens,
+                            );
 
-  itens:
-      carrinhoProvider.itens,
-);
+                            bool sucesso = await pedidoProvider.criarPedido(
+                              pedido,
+                            );
 
-bool sucesso =
-    await pedidoProvider
-        .criarPedido(
-  pedido,
-);
+                            if (!context.mounted) {
+                              return;
+                            }
 
+                            if (sucesso) {
+                              carrinhoProvider.limparCarrinho();
 
-                                if (!context
-                                    .mounted) {
-                                  return;
-                                }
+                              showDialog(
+                                context: context,
 
-                                if (sucesso) {
+                                builder: (_) => AlertDialog(
+                                  title: const Text("Pedido enviado"),
 
-                                  carrinhoProvider
-                                      .limparCarrinho();
+                                  content: const Text(
+                                    "Seu pedido foi enviado com sucesso.",
+                                  ),
 
-                                  showDialog(
-                                    context:
-                                        context,
-
-                                    builder:
-                                        (_) =>
-                                            AlertDialog(
-
-                                      title:
-                                          const Text(
-                                        "Pedido enviado",
-                                      ),
-
-                                      content:
-                                          const Text(
-                                        "Seu pedido foi enviado com sucesso.",
-                                      ),
-
-                                      actions: [
-
-                                        TextButton(
-                                          onPressed:
-                                              () {
-
-                                            Navigator.of(
-                                              context,
-                                            ).pushAndRemoveUntil(
-
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (_) =>
-                                                        const FirstPage(),
-                                              ),
-
-                                              (
-                                                route,
-                                              ) =>
-                                                  false,
-                                            );
-                                          },
-
-                                          child:
-                                              const Text(
-                                            "OK",
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(
+                                          context,
+                                        ).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (_) => const FirstPage(),
                                           ),
-                                        ),
-                                      ],
+
+                                          (route) => false,
+                                        );
+                                      },
+
+                                      child: const Text("OK"),
                                     ),
-                                  );
-                                }
-                              },
+                                  ],
+                                ),
+                              );
+                            }
+                          },
 
-                    style:
-                        ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color(
-                        0xFF0B4D2B,
-                      ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0B4D2B),
 
-                      shape:
-                          RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius
-                                .circular(
-                          20,
-                        ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
 
-                    icon:
-                        pedidoProvider
-                                .carregando
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
+                    icon: pedidoProvider.carregando
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
 
-                                child:
-                                    CircularProgressIndicator(
-                                  strokeWidth:
-                                      2,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
 
-                                  color:
-                                      Colors
-                                          .white,
-                                ),
-                              )
-                            : const Icon(
-                                Icons.send,
-                                color:
-                                    Colors.white,
-                              ),
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.send, color: Colors.white),
 
                     label: const Text(
                       "Enviar Pedido",
@@ -571,11 +393,9 @@ bool sucesso =
                       style: TextStyle(
                         fontSize: 18,
 
-                        fontWeight:
-                            FontWeight.bold,
+                        fontWeight: FontWeight.bold,
 
-                        color:
-                            Colors.white,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -588,4 +408,3 @@ bool sucesso =
     );
   }
 }
-

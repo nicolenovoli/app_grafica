@@ -21,62 +21,50 @@ class _OrdersPageState extends State<OrdersPage> {
 
   List<PedidoModel> pedidos = [];
 
-bool carregando = false;
-  
+  bool carregando = false;
 
-Future<void> buscarPedidos() async {
+  Future<void> buscarPedidos() async {
+    String telefone = telefoneController.text.replaceAll(RegExp(r'\D'), '');
 
-  String telefone =
-      telefoneController.text
-          .replaceAll(RegExp(r'\D'), '');
+    setState(() {
+      carregando = true;
+    });
 
-  setState(() {
-    carregando = true;
-  });
+    final provider = Provider.of<PedidoProvider>(context, listen: false);
 
-  final provider =
-      Provider.of<PedidoProvider>(
-    context,
-    listen: false,
-  );
+    await provider.buscarPedidosPorTelefone(telefone);
 
-  await provider.buscarPedidosPorTelefone(
-    telefone,
-  );
+    setState(() {
+      pedidos = provider.pedidos;
 
-  setState(() {
+      carregando = false;
 
-    pedidos = provider.pedidos;
-
-    carregando = false;
-
-    pesquisou = true;
-  });
-}
-
+      pesquisou = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F6F2),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            const SizedBox(height: 30),
-
-            const CustomAppBar(),
+            const CustomAppBar(
+              paginaAtual: "pedidos",
+            ),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.fromLTRB(26, 0, 26, 26),
 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
                   const SizedBox(height: 30),
-                  
+
                   const Text(
                     "Meus Pedidos",
 
@@ -92,24 +80,23 @@ Future<void> buscarPedidos() async {
                   const SizedBox(height: 30),
 
                   !pesquisou
-    ? _buildIdentificacao()
-    : carregando
-        ? const Center(
-            child: Padding(
-              padding: EdgeInsets.all(40),
-              child: CircularProgressIndicator(),
-            ),
-          )
-        : pedidos.isEmpty
-            ? _buildSemPedidos()
-            : _buildListaPedidos(),
+                      ? _buildIdentificacao()
+                      : carregando
+                      ? const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(40),
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : pedidos.isEmpty
+                      ? _buildSemPedidos()
+                      : _buildListaPedidos(),
                 ],
               ),
             ),
           ],
         ),
       ),
-      
     );
   }
   // ==========================================
@@ -193,13 +180,12 @@ Future<void> buscarPedidos() async {
 
             GestureDetector(
               onTap: () async {
+                if (telefoneController.text.length < 15) {
+                  return;
+                }
 
-  if (telefoneController.text.length < 15) {
-    return;
-  }
-
-  await buscarPedidos();
-},
+                await buscarPedidos();
+              },
 
               child: Container(
                 width: 60,
@@ -337,85 +323,56 @@ Future<void> buscarPedidos() async {
   }
 
   Widget _buildListaPedidos() {
-
     return Column(
-
       children: [
-
         const SizedBox(height: 20),
 
-        ...pedidos.map(
+        ...pedidos.map((pedido) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16),
 
-          (pedido) {
+            padding: const EdgeInsets.all(20),
 
-            return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
 
-              margin:
-                  const EdgeInsets.only(
-                bottom: 16,
-              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
 
-              padding:
-                  const EdgeInsets.all(
-                20,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-              decoration:
-                  BoxDecoration(
-
-                color: Colors.white,
-
-                borderRadius:
-                    BorderRadius.circular(
-                  20,
+              children: [
+                Text(
+                  pedido.itens.first.nomeProduto,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
 
-              child: Column(
+                const SizedBox(height: 12),
 
-  crossAxisAlignment:
-      CrossAxisAlignment.start,
+                Text("Quantidade: ${pedido.itens.first.quantidade}"),
 
-  children: [
+                const SizedBox(height: 8),
 
-    Text(
-      pedido.itens.first.nomeProduto,
-      style: const TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
+                Text("Opções: ${pedido.itens.first.observacoes}"),
 
-    const SizedBox(height: 12),
+                const SizedBox(height: 8),
 
-    Text(
-      "Quantidade: ${pedido.itens.first.quantidade}",
-    ),
+                Text("Valor: R\$ ${pedido.valorTotal.toStringAsFixed(2)}"),
 
-    const SizedBox(height: 8),
+                const SizedBox(height: 8),
 
-    Text(
-      "Opções: ${pedido.itens.first.observacoes}",
-    ),
-
-    const SizedBox(height: 8),
-
-    Text(
-      "Valor: R\$ ${pedido.valorTotal.toStringAsFixed(2)}",
-    ),
-
-    const SizedBox(height: 8),
-
-    Text(
-      "Data: ${pedido.dataPedido?.split('T').first ?? ''}",
-    ),
-  ],
-)
-            );
-          },
-        ),
+                Text("Data: ${pedido.dataPedido?.split('T').first ?? ''}"),
+              ],
+            ),
+          );
+        }),
       ],
-    );  }
+    );
+  }
 }
 
 // ==========================================

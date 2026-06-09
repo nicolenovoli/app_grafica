@@ -19,7 +19,9 @@ class CarrinhoPage extends StatelessWidget {
 
       body: Column(
         children: [
-          const CustomAppBar(),
+          const CustomAppBar(
+            paginaAtual: "carrinho",
+          ),
 
           Expanded(
             child: SingleChildScrollView(
@@ -37,7 +39,7 @@ class CarrinhoPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 24,
 
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.bold,
 
                         color: Color(0xFF003B2F),
                       ),
@@ -82,7 +84,7 @@ class CarrinhoPage extends StatelessWidget {
                                 "Carrinho vazio",
 
                                 style: TextStyle(
-                                  fontSize: 34,
+                                  fontSize: 24,
 
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -94,7 +96,7 @@ class CarrinhoPage extends StatelessWidget {
                                 "Adicione produtos do nosso catálogo para começar.",
 
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
 
                                   color: Colors.grey.shade700,
                                 ),
@@ -103,8 +105,8 @@ class CarrinhoPage extends StatelessWidget {
                               const SizedBox(height: 40),
 
                               SizedBox(
-                                width: 240,
-                                height: 65,
+                                width: 230,
+                                height: 60,
 
                                 child: ElevatedButton(
                                   onPressed: () {
@@ -123,7 +125,7 @@ class CarrinhoPage extends StatelessWidget {
                                     "Ver catálogo",
 
                                     style: TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 20,
 
                                       fontWeight: FontWeight.bold,
 
