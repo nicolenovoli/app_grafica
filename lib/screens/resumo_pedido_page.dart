@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/constants/app_constants.dart';
 import 'package:provider/provider.dart';
-
-import '../models/pedido_model.dart';
 
 import '../providers/carrinho_provider.dart';
 import '../providers/cliente_provider.dart';
@@ -14,7 +13,7 @@ import 'first_page.dart';
 class ResumoPedidoPage extends StatelessWidget {
   const ResumoPedidoPage({super.key});
 
-  static const String chavePix = "pix@graficapergaminho.com.br";
+  static const String chavePix = AppConstants.chavePix;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +32,6 @@ class ResumoPedidoPage extends StatelessWidget {
     }
 
     return Scaffold(
-      
-
       appBar: AppBar(
         backgroundColor: Colors.white,
 
@@ -265,7 +262,7 @@ class ResumoPedidoPage extends StatelessWidget {
 
                       Text(
                         cliente.tipoEntrega == "retirada"
-                            ? "Retirar na Gráfica Pergaminho\nAv. Alexandre Rasgulaeff, 2733\nJardim Santa Alice\nMaringá PR"
+                            ? AppConstants.enderecoRetirada
                             : cliente.endereco ?? "",
                       ),
                     ],
@@ -284,7 +281,7 @@ class ResumoPedidoPage extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () async {
                       await Clipboard.setData(
-                        const ClipboardData(text: chavePix),
+                        const ClipboardData(text: AppConstants.chavePix),
                       );
 
                       if (!context.mounted) {
@@ -315,18 +312,11 @@ class ResumoPedidoPage extends StatelessWidget {
                     onPressed: pedidoProvider.carregando
                         ? null
                         : () async {
-                            final pedido = PedidoModel(
+                            bool sucesso = await pedidoProvider.finalizarPedido(
                               clienteId: cliente.id!,
-
                               valorTotal: carrinhoProvider.total,
-
                               itens: carrinhoProvider.itens,
                             );
-
-                            bool sucesso = await pedidoProvider.criarPedido(
-                              pedido,
-                            );
-
                             if (!context.mounted) {
                               return;
                             }
