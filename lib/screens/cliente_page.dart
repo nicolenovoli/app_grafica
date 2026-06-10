@@ -8,59 +8,41 @@ import '../screens/resumo_pedido_page.dart';
 import '../widgets/footer_section.dart';
 
 class ClientePage extends StatefulWidget {
-
-  const ClientePage({
-    super.key,
-  });
+  const ClientePage({super.key});
 
   @override
-  State<ClientePage> createState() =>
-      _ClientePageState();
+  State<ClientePage> createState() => _ClientePageState();
 }
 
-class _ClientePageState
-    extends State<ClientePage> {
-
-  final _formKey =
-      GlobalKey<FormState>();
+class _ClientePageState extends State<ClientePage> {
+  final _formKey = GlobalKey<FormState>();
 
   // =====================================
   // CONTROLLERS
   // =====================================
 
-  final telefoneController =
-      TextEditingController();
+  final telefoneController = TextEditingController();
 
-  final nomeController =
-      TextEditingController();
+  final nomeController = TextEditingController();
 
-  final emailController =
-      TextEditingController();
+  final emailController = TextEditingController();
 
-  final ruaController =
-      TextEditingController();
+  final ruaController = TextEditingController();
 
-  final numeroController =
-      TextEditingController();
+  final numeroController = TextEditingController();
 
-  final bairroController =
-      TextEditingController();
+  final bairroController = TextEditingController();
 
-  final cidadeController =
-      TextEditingController();
+  final cidadeController = TextEditingController();
 
-  final ufController =
-      TextEditingController();
+  final ufController = TextEditingController();
 
-  final cepController =
-      TextEditingController();
+  final cepController = TextEditingController();
 
-  String tipoEntrega =
-      "entrega";
+  String tipoEntrega = "entrega";
 
   @override
   void dispose() {
-
     telefoneController.dispose();
 
     nomeController.dispose();
@@ -84,426 +66,274 @@ class _ClientePageState
 
   @override
   Widget build(BuildContext context) {
-
-    final clienteProvider =
-        Provider.of<ClienteProvider>(
-      context,
-    );
+    final clienteProvider = Provider.of<ClienteProvider>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
 
-      backgroundColor:
-          const Color(0xFFF7F6F2),
+        elevation: 0,
+
+        title: const Text(
+          "Identificação",
+          style: TextStyle(
+            fontSize: 22,
+            color: Color(0xFF0B4D2B),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        iconTheme: const IconThemeData(color: Color(0xFF0B4D2B)),
+      ),
+
+      backgroundColor: Colors.white,
 
       body: SingleChildScrollView(
-
         child: Column(
-
           children: [
-
             Padding(
-
-              padding:
-                  const EdgeInsets.all(40),
+              padding: const EdgeInsets.all(10),
 
               child: Center(
-
                 child: ConstrainedBox(
-
-                  constraints:
-                      const BoxConstraints(
-                    maxWidth: 900,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 900),
 
                   child: Form(
-
                     key: _formKey,
 
                     child: Column(
-
-                      crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
 
                       children: [
-
-                        // =====================================
-                        // TOPO
-                        // =====================================
-
-                        Row(
-
-                          children: [
-
-                            IconButton(
-
-                              onPressed: () {
-                                Navigator.pop(
-                                  context,
-                                );
-                              },
-
-                              icon: const Icon(
-                                Icons.arrow_back,
-                              ),
-                            ),
-
-                            const SizedBox(
-                              width: 10,
-                            ),
-
-                            const Text(
-
-                              "Identificação",
-
-                              style: TextStyle(
-
-                                fontSize: 38,
-
-                                fontWeight:
-                                    FontWeight.bold,
-
-                                color:
-                                    Color(
-                                  0xFF0B4D2B,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(
-                          height: 40,
-                        ),
-
-                        const Text(
-
-                          "Informe seus dados para continuar o pedido.",
-
-                          style: TextStyle(
-                            fontSize: 16,
-                            color:
-                                Colors.black54,
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 35,
-                        ),
+                        const SizedBox(height: 35),
 
                         // =====================================
                         // TELEFONE
                         // =====================================
+                        _tituloCampo("TELEFONE *"),
 
-                        _tituloCampo(
-                          "TELEFONE *",
-                        ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
 
                         Row(
-
                           children: [
-
                             Expanded(
-child: TextFormField(
+                              child: TextFormField(
+                                controller: telefoneController,
 
-  controller: telefoneController,
+                                keyboardType: TextInputType.phone,
 
-  keyboardType: TextInputType.phone,
+                                cursorColor: const Color(0xFF0B4D2B),
 
-  inputFormatters: [
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ),
 
-    FilteringTextInputFormatter.digitsOnly,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ),
 
-    LengthLimitingTextInputFormatter(11),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF0B4D2B),
+                                      width: 2,
+                                    ),
+                                  ),
+                                ),
 
-    TelefoneInputFormatter(),
-  ],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
 
-  validator: (value) {
+                                  LengthLimitingTextInputFormatter(11),
 
-  if (value == null || value.isEmpty) {
+                                  TelefoneInputFormatter(),
+                                ],
 
-    return "Informe o telefone";
-  }
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Informe o telefone";
+                                  }
 
-  final numeros = value.replaceAll(
-    RegExp(r'[^0-9]'),
-    '',
-  );
+                                  final numeros = value.replaceAll(
+                                    RegExp(r'[^0-9]'),
+                                    '',
+                                  );
 
-  if (numeros.length != 11) {
+                                  if (numeros.length != 11) {
+                                    return "Telefone deve conter DDD + número";
+                                  }
 
-    return "Telefone deve conter DDD + número";
-  }
-
-  return null;
-},
+                                  return null;
+                                },
                               ),
                             ),
 
-                            const SizedBox(
-                              width: 14,
-                            ),
+                            const SizedBox(width: 14),
 
                             Container(
-
                               width: 58,
                               height: 58,
 
-                              decoration:
-                                  BoxDecoration(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF0B4D2B),
 
-                                color:
-                                    const Color(
-                                  0xFF0B4D2B,
-                                ),
-
-                                borderRadius:
-                                    BorderRadius.circular(
-                                  18,
-                                ),
+                                borderRadius: BorderRadius.circular(18),
                               ),
 
                               child: IconButton(
-
                                 onPressed: () async {
+                                  final numeros = telefoneController.text
+                                      .replaceAll(RegExp(r'[^0-9]'), '');
 
-  final numeros = telefoneController.text.replaceAll(
-    RegExp(r'[^0-9]'),
-    '',
-  );
+                                  if (numeros.length != 11) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Informe um telefone válido com DDD",
+                                        ),
+                                      ),
+                                    );
 
-  if (numeros.length != 11) {
+                                    return;
+                                  }
 
-    ScaffoldMessenger.of(context).showSnackBar(
+                                  bool encontrou = await clienteProvider
+                                      .buscarClientePorTelefone(
+                                        telefoneController.text.replaceAll(
+                                          RegExp(r'[^0-9]'),
+                                          '',
+                                        ),
+                                      );
 
-      const SnackBar(
+                                  if (!context.mounted) {
+                                    return;
+                                  }
 
-        content: Text(
-          "Informe um telefone válido com DDD",
-        ),
-      ),
-    );
+                                  // CLIENTE ENCONTRADO
+                                  if (encontrou &&
+                                      clienteProvider.cliente != null) {
+                                    final cliente = clienteProvider.cliente!;
 
-    return;
-  }
+                                    nomeController.text = cliente.nome;
 
+                                    emailController.text = cliente.email ?? "";
 
-bool encontrou =
-    await clienteProvider
-        .buscarClientePorTelefone(
-  telefoneController.text.replaceAll(
-    RegExp(r'[^0-9]'),
-    '',
-  ),
-);
+                                    tipoEntrega = cliente.tipoEntrega;
 
-  if (!context.mounted) {
-    return;
-  }
+                                    setState(() {});
 
-  // CLIENTE ENCONTRADO
-  if (encontrou &&
-      clienteProvider.cliente != null) {
-
-    final cliente =
-        clienteProvider.cliente!;
-
-    nomeController.text =
-        cliente.nome;
-
-    emailController.text =
-        cliente.email ?? "";
-
-    tipoEntrega =
-        cliente.tipoEntrega;
-
-    setState(() {});
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
-
-      const SnackBar(
-
-        content: Text(
-          "Cliente encontrado!",
-        ),
-      ),
-    );
-  }
-
-  // CLIENTE NÃO ENCONTRADO
-  else {
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
-
-      const SnackBar(
-
-        content: Text(
-          "Cliente não encontrado. Continue preenchendo para cadastrar.",
-        ),
-      ),
-    );
-  }
-},
+                                  }
+                                  // CLIENTE NÃO ENCONTRADO
+                                  else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Perfil não encontrado. Continue preenchendo para cadastrar.",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
 
                                 icon: const Icon(
-
                                   Icons.search,
 
-                                  color:
-                                      Colors.white,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ],
                         ),
 
-                        const SizedBox(
-                          height: 28,
-                        ),
+                        const SizedBox(height: 28),
 
                         // =====================================
                         // NOME
                         // =====================================
+                        _tituloCampo("NOME *"),
 
-                        _tituloCampo(
-                          "NOME *",
-                        ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
 
                         _campoTexto(
+                          controller: nomeController,
 
-                          controller:
-                              nomeController,
-
-                          hint:
-                              "Seu nome completo",
+                          hint: "Nome completo",
 
                           validator: (value) {
-
-                            if (value ==
-                                    null ||
-                                value.isEmpty) {
-
-                              return
-                                  "Informe o nome";
+                            if (value == null || value.isEmpty) {
+                              return "Informe o nome";
                             }
 
                             return null;
                           },
                         ),
 
-                        const SizedBox(
-                          height: 28,
-                        ),
+                        const SizedBox(height: 28),
 
                         // =====================================
                         // EMAIL
                         // =====================================
+                        _tituloCampo("E-MAIL (OPCIONAL)"),
 
-                        _tituloCampo(
-                          "E-MAIL (OPCIONAL)",
-                        ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
 
                         _campoTexto(
+                          controller: emailController,
 
-                          controller:
-                              emailController,
-
-                          hint:
-                              "seu@email.com",
+                          hint: "seu@email.com",
                         ),
 
-                        const SizedBox(
-                          height: 35,
-                        ),
+                        const SizedBox(height: 35),
 
                         // =====================================
                         // ENTREGA
                         // =====================================
+                        _tituloCampo("TIPO DE PEDIDO *"),
 
-                        _tituloCampo(
-                          "TIPO DE PEDIDO *",
-                        ),
-
-                        const SizedBox(
-                          height: 14,
-                        ),
+                        const SizedBox(height: 14),
 
                         Row(
-
                           children: [
-
                             Expanded(
+                              child: _tipoEntregaCard(
+                                ativo: tipoEntrega == "entrega",
 
-                              child:
-                                  _tipoEntregaCard(
+                                titulo: "Entrega",
 
-                                ativo:
-                                    tipoEntrega ==
-                                        "entrega",
+                                subtitulo: "Receba em casa",
 
-                                titulo:
-                                    "Entrega",
-
-                                subtitulo:
-                                    "Receba em casa",
-
-                                icon:
-                                    Icons.local_shipping_outlined,
+                                icon: Icons.local_shipping_outlined,
 
                                 onTap: () {
-
                                   setState(() {
-
-                                    tipoEntrega =
-                                        "entrega";
+                                    tipoEntrega = "entrega";
                                   });
                                 },
                               ),
                             ),
 
-                            const SizedBox(
-                              width: 20,
-                            ),
+                            const SizedBox(width: 20),
 
                             Expanded(
+                              child: _tipoEntregaCard(
+                                ativo: tipoEntrega == "retirada",
 
-                              child:
-                                  _tipoEntregaCard(
+                                titulo: "Retirada",
 
-                                ativo:
-                                    tipoEntrega ==
-                                        "retirada",
+                                subtitulo: "Retirar na loja",
 
-                                titulo:
-                                    "Retirada",
-
-                                subtitulo:
-                                    "Retirar na loja",
-
-                                icon:
-                                    Icons.storefront_outlined,
+                                icon: Icons.storefront_outlined,
 
                                 onTap: () {
-
                                   setState(() {
-
-                                    tipoEntrega =
-                                        "retirada";
+                                    tipoEntrega = "retirada";
                                   });
                                 },
                               ),
@@ -511,52 +341,30 @@ bool encontrou =
                           ],
                         ),
 
-                        const SizedBox(
-                          height: 35,
-                        ),
+                        const SizedBox(height: 35),
 
                         // =====================================
                         // ENDEREÇO
                         // =====================================
+                        if (tipoEntrega == "entrega") ...[
+                          _tituloCampo("ENDEREÇO DE ENTREGA *"),
 
-                        if (tipoEntrega ==
-                            "entrega") ...[
-
-                          _tituloCampo(
-                            "ENDEREÇO DE ENTREGA *",
-                          ),
-
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          const SizedBox(height: 20),
 
                           Row(
-
                             children: [
-
                               Expanded(
-
                                 flex: 4,
 
                                 child: _campoTexto(
-
-                                  controller:
-                                      ruaController,
+                                  controller: ruaController,
 
                                   hint: "Rua",
 
-                                  validator:
-                                      (value) {
-
-                                    if (tipoEntrega ==
-                                            "entrega" &&
-                                        (value ==
-                                                null ||
-                                            value
-                                                .isEmpty)) {
-
-                                      return
-                                          "Informe a rua";
+                                  validator: (value) {
+                                    if (tipoEntrega == "entrega" &&
+                                        (value == null || value.isEmpty)) {
+                                      return "Informe a rua";
                                     }
 
                                     return null;
@@ -564,34 +372,20 @@ bool encontrou =
                                 ),
                               ),
 
-                              const SizedBox(
-                                width: 14,
-                              ),
+                              const SizedBox(width: 14),
 
                               Expanded(
-
                                 flex: 1,
 
                                 child: _campoTexto(
+                                  controller: numeroController,
 
-                                  controller:
-                                      numeroController,
+                                  hint: "Nº",
 
-                                  hint:
-                                      "Nº",
-
-                                  validator:
-                                      (value) {
-
-                                    if (tipoEntrega ==
-                                            "entrega" &&
-                                        (value ==
-                                                null ||
-                                            value
-                                                .isEmpty)) {
-
-                                      return
-                                          "Número";
+                                  validator: (value) {
+                                    if (tipoEntrega == "entrega" &&
+                                        (value == null || value.isEmpty)) {
+                                      return "Número";
                                     }
 
                                     return null;
@@ -601,38 +395,22 @@ bool encontrou =
                             ],
                           ),
 
-                          const SizedBox(
-                            height: 14,
-                          ),
+                          const SizedBox(height: 14),
 
                           Row(
-
                             children: [
-
                               Expanded(
-
                                 flex: 3,
 
                                 child: _campoTexto(
+                                  controller: bairroController,
 
-                                  controller:
-                                      bairroController,
+                                  hint: "Bairro",
 
-                                  hint:
-                                      "Bairro",
-
-                                  validator:
-                                      (value) {
-
-                                    if (tipoEntrega ==
-                                            "entrega" &&
-                                        (value ==
-                                                null ||
-                                            value
-                                                .isEmpty)) {
-
-                                      return
-                                          "Informe o bairro";
+                                  validator: (value) {
+                                    if (tipoEntrega == "entrega" &&
+                                        (value == null || value.isEmpty)) {
+                                      return "Informe o bairro";
                                     }
 
                                     return null;
@@ -640,34 +418,20 @@ bool encontrou =
                                 ),
                               ),
 
-                              const SizedBox(
-                                width: 14,
-                              ),
+                              const SizedBox(width: 14),
 
                               Expanded(
-
                                 flex: 3,
 
                                 child: _campoTexto(
+                                  controller: cidadeController,
 
-                                  controller:
-                                      cidadeController,
+                                  hint: "Cidade",
 
-                                  hint:
-                                      "Cidade",
-
-                                  validator:
-                                      (value) {
-
-                                    if (tipoEntrega ==
-                                            "entrega" &&
-                                        (value ==
-                                                null ||
-                                            value
-                                                .isEmpty)) {
-
-                                      return
-                                          "Informe a cidade";
+                                  validator: (value) {
+                                    if (tipoEntrega == "entrega" &&
+                                        (value == null || value.isEmpty)) {
+                                      return "Informe a cidade";
                                     }
 
                                     return null;
@@ -675,33 +439,20 @@ bool encontrou =
                                 ),
                               ),
 
-                              const SizedBox(
-                                width: 14,
-                              ),
+                              const SizedBox(width: 14),
 
                               Expanded(
-
                                 flex: 1,
 
                                 child: _campoTexto(
-
-                                  controller:
-                                      ufController,
+                                  controller: ufController,
 
                                   hint: "UF",
 
-                                  validator:
-                                      (value) {
-
-                                    if (tipoEntrega ==
-                                            "entrega" &&
-                                        (value ==
-                                                null ||
-                                            value
-                                                .isEmpty)) {
-
-                                      return
-                                          "UF";
+                                  validator: (value) {
+                                    if (tipoEntrega == "entrega" &&
+                                        (value == null || value.isEmpty)) {
+                                      return "UF";
                                     }
 
                                     return null;
@@ -711,60 +462,42 @@ bool encontrou =
                             ],
                           ),
 
-                          const SizedBox(
-                            height: 14,
-                          ),
+                          const SizedBox(height: 14),
 
                           _campoTexto(
-
-                            controller:
-                                cepController,
+                            controller: cepController,
 
                             hint: "CEP",
 
-                            validator:
-                                (value) {
-
-                              if (tipoEntrega ==
-                                      "entrega" &&
-                                  (value ==
-                                          null ||
-                                      value
-                                          .isEmpty)) {
-
-                                return
-                                    "Informe o CEP";
+                            validator: (value) {
+                              if (tipoEntrega == "entrega" &&
+                                  (value == null || value.isEmpty)) {
+                                return "Informe o CEP";
                               }
 
                               return null;
                             },
                           ),
 
-                          const SizedBox(
-                            height: 40,
-                          ),
+                          const SizedBox(height: 40),
                         ],
 
                         // =====================================
                         // BOTÃO
                         // =====================================
-
                         SizedBox(
-
                           width: double.infinity,
 
                           height: 60,
 
                           child: ElevatedButton(
-
                             onPressed: () async {
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
 
-  if (!_formKey.currentState!.validate()) {
-    return;
-  }
-
-String enderecoCompleto =
-                                            """
+                              String enderecoCompleto =
+                                  """
 
 Rua: ${ruaController.text}
 Número: ${numeroController.text}
@@ -775,101 +508,63 @@ CEP: ${cepController.text}
 
 """;
 
-                                        bool sucesso =
-                                            await clienteProvider
-                                                .cadastrarCliente(
+                              bool sucesso = await clienteProvider
+                                  .cadastrarCliente(
+                                    ClienteModel(
+                                      nome: nomeController.text,
 
-                                          ClienteModel(
+                                      telefone: telefoneController.text
+                                          .replaceAll(RegExp(r'[^0-9]'), ''),
 
-                                            nome:
-                                                nomeController
-                                                    .text,
+                                      email: emailController.text.isEmpty
+                                          ? null
+                                          : emailController.text,
 
-                                            telefone: telefoneController.text.replaceAll(
-  RegExp(r'[^0-9]'),
-  '',
-),
+                                      tipoEntrega: tipoEntrega,
 
-                                            email:
-                                                emailController
-                                                        .text
-                                                        .isEmpty
-                                                    ? null
-                                                    : emailController
-                                                        .text,
+                                      endereco: tipoEntrega == "entrega"
+                                          ? enderecoCompleto
+                                          : null,
+                                    ),
+                                  );
 
-                                            tipoEntrega:
-                                                tipoEntrega,
+                              if (!context.mounted) {
+                                return;
+                              }
 
-                                            endereco:
-                                                tipoEntrega ==
-                                                        "entrega"
-                                                    ? enderecoCompleto
-                                                    : null,
-                                          ),
-                                        );
+                              if (sucesso) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const ResumoPedidoPage(),
+                                  ),
+                                );
+                              }
+                            },
 
-                                        if (!context
-                                            .mounted) {
-                                          return;
-                                        }
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0B4D2B),
 
-                                        if (sucesso) {
-
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const ResumoPedidoPage(),
-    ),
-  );
-}
-                                      },
-
-                            style:
-                                ElevatedButton.styleFrom(
-
-                              backgroundColor:
-                                  const Color(
-                                0xFF0B4D2B,
-                              ),
-
-                              shape:
-                                  RoundedRectangleBorder(
-
-                                borderRadius:
-                                    BorderRadius.circular(
-                                  20,
-                                ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
 
-                            child:
-                                clienteProvider
-                                        .carregando
-                                    ? const CircularProgressIndicator(
-                                        color:
-                                            Colors
-                                                .white,
-                                      )
-                                    : const Text(
+                            child: clienteProvider.carregando
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text(
+                                    "CONTINUAR",
 
-                                        "CONTINUAR",
+                                    style: TextStyle(
+                                      fontSize: 16,
 
-                                        style:
-                                            TextStyle(
+                                      fontWeight: FontWeight.bold,
 
-                                          fontSize:
-                                              18,
-
-                                          fontWeight:
-                                              FontWeight
-                                                  .bold,
-
-                                          color:
-                                              Colors
-                                                  .white,
-                                        ),
-                                      ),
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
                         ),
                       ],
@@ -878,99 +573,69 @@ CEP: ${cepController.text}
                 ),
               ),
             ),
-
-            const FooterSection(),
           ],
         ),
       ),
     );
   }
 
-  Widget _tituloCampo(
-    String titulo,
-  ) {
-
+  Widget _tituloCampo(String titulo) {
     return Text(
-
       titulo,
 
       style: const TextStyle(
-
         fontSize: 15,
 
-        fontWeight:
-            FontWeight.bold,
+        fontWeight: FontWeight.bold,
 
-        color:
-            Color(0xFF355E4C),
+        color: Color(0xFF355E4C),
       ),
     );
   }
 
   Widget _campoTexto({
-
-    required TextEditingController
-        controller,
-
+    required TextEditingController controller,
     required String hint,
-
-    String? Function(String?)?
-        validator,
-
+    String? Function(String?)? validator,
     int maxLines = 1,
   }) {
-
     return TextFormField(
-
       controller: controller,
-
       validator: validator,
-
       maxLines: maxLines,
 
-      decoration: InputDecoration(
+      cursorColor: const Color(0xFF0B4D2B),
 
+      decoration: InputDecoration(
         hintText: hint,
 
         filled: true,
-
         fillColor: Colors.white,
 
-        contentPadding:
-            const EdgeInsets.symmetric(
-
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 18,
         ),
 
         border: OutlineInputBorder(
-
-          borderRadius:
-              BorderRadius.circular(18),
-
-          borderSide: BorderSide(
-            color:
-                Colors.grey.shade300,
-          ),
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
 
-        enabledBorder:
-            OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
 
-          borderRadius:
-              BorderRadius.circular(18),
-
-          borderSide: BorderSide(
-            color:
-                Colors.grey.shade300,
-          ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: const BorderSide(color: Color(0xFF0B4D2B), width: 2),
         ),
       ),
     );
   }
 
   Widget _tipoEntregaCard({
-
     required bool ativo,
 
     required String titulo,
@@ -981,88 +646,48 @@ CEP: ${cepController.text}
 
     required VoidCallback onTap,
   }) {
-
     return GestureDetector(
-
       onTap: onTap,
 
       child: Container(
-
-        padding:
-            const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
 
         decoration: BoxDecoration(
+          color: ativo ? const Color(0xFF0B4D2B) : Colors.white,
 
-          color: ativo
-              ? const Color(
-                  0xFF0B4D2B,
-                )
-              : Colors.white,
-
-          borderRadius:
-              BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(24),
 
           border: Border.all(
-
-            color: ativo
-                ? const Color(
-                    0xFF0B4D2B,
-                  )
-                : Colors.grey.shade300,
+            color: ativo ? const Color(0xFF0B4D2B) : Colors.grey.shade300,
           ),
         ),
 
         child: Column(
-
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
+            Icon(icon, color: ativo ? Colors.white : Colors.black87),
 
-            Icon(
-
-              icon,
-
-              color: ativo
-                  ? Colors.white
-                  : Colors.black87,
-            ),
-
-            const SizedBox(
-              height: 18,
-            ),
+            const SizedBox(height: 18),
 
             Text(
-
               titulo,
 
               style: TextStyle(
-
                 fontSize: 20,
 
-                fontWeight:
-                    FontWeight.bold,
+                fontWeight: FontWeight.bold,
 
-                color: ativo
-                    ? Colors.white
-                    : Colors.black,
+                color: ativo ? Colors.white : Colors.black,
               ),
             ),
 
-            const SizedBox(
-              height: 6,
-            ),
+            const SizedBox(height: 6),
 
             Text(
-
               subtitulo,
 
-              style: TextStyle(
-
-                color: ativo
-                    ? Colors.white70
-                    : Colors.black54,
-              ),
+              style: TextStyle(color: ativo ? Colors.white70 : Colors.black54),
             ),
           ],
         ),
@@ -1072,26 +697,17 @@ CEP: ${cepController.text}
 }
 
 class TelefoneInputFormatter extends TextInputFormatter {
-
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-
-    String numeros =
-        newValue.text.replaceAll(
-      RegExp(r'\D'),
-      '',
-    );
+    String numeros = newValue.text.replaceAll(RegExp(r'\D'), '');
 
     if (numeros.isEmpty) {
-
       return const TextEditingValue(
         text: '',
-        selection: TextSelection.collapsed(
-          offset: 0,
-        ),
+        selection: TextSelection.collapsed(offset: 0),
       );
     }
 
@@ -1100,44 +716,29 @@ class TelefoneInputFormatter extends TextInputFormatter {
     textoFormatado += '(';
 
     if (numeros.length >= 2) {
-
-      textoFormatado +=
-          numeros.substring(0, 2);
+      textoFormatado += numeros.substring(0, 2);
 
       textoFormatado += ') ';
     } else {
-
       textoFormatado += numeros;
     }
 
     if (numeros.length > 2) {
-
       if (numeros.length <= 7) {
-
-        textoFormatado +=
-            numeros.substring(2);
-
+        textoFormatado += numeros.substring(2);
       } else {
-
-        textoFormatado +=
-            numeros.substring(2, 7);
+        textoFormatado += numeros.substring(2, 7);
 
         textoFormatado += '-';
 
-        textoFormatado +=
-            numeros.substring(7);
+        textoFormatado += numeros.substring(7);
       }
     }
 
     return TextEditingValue(
-
       text: textoFormatado,
 
-      selection:
-          TextSelection.collapsed(
-        offset:
-            textoFormatado.length,
-      ),
+      selection: TextSelection.collapsed(offset: textoFormatado.length),
     );
   }
 }

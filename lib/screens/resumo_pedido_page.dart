@@ -38,8 +38,9 @@ class ResumoPedidoPage extends StatelessWidget {
         elevation: 0,
 
         title: const Text(
-          "Resumo do Pedido",
+          "Finalizar Pedido",
           style: TextStyle(
+            fontSize: 22,
             color: Color(0xFF0B4D2B),
             fontWeight: FontWeight.bold,
           ),
@@ -48,6 +49,7 @@ class ResumoPedidoPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Color(0xFF0B4D2B)),
       ),
 
+      backgroundColor: const Color(0xFFF7F6F2),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(30),
 
@@ -76,10 +78,10 @@ class ResumoPedidoPage extends StatelessWidget {
 
                     children: [
                       const Text(
-                        "Resumo do pedido",
+                        "Resumo do Pedido",
 
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 16,
 
                           fontWeight: FontWeight.bold,
                         ),
@@ -137,7 +139,7 @@ class ResumoPedidoPage extends StatelessWidget {
                             "TOTAL",
 
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
 
                               fontWeight: FontWeight.bold,
                             ),
@@ -147,7 +149,7 @@ class ResumoPedidoPage extends StatelessWidget {
                             "R\$ ${carrinhoProvider.total.toStringAsFixed(2).replaceAll(".", ",")}",
 
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 18,
 
                               fontWeight: FontWeight.bold,
 
@@ -183,10 +185,10 @@ class ResumoPedidoPage extends StatelessWidget {
 
                         children: [
                           const Text(
-                            "Dados do cliente",
+                            "Dados do Cliente",
 
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
 
                               fontWeight: FontWeight.bold,
                             ),
@@ -196,16 +198,32 @@ class ResumoPedidoPage extends StatelessWidget {
                             onPressed: () {
                               Navigator.push(
                                 context,
-
                                 MaterialPageRoute(
                                   builder: (_) => const ClientePage(),
                                 ),
                               );
                             },
 
+                            style: ButtonStyle(
+                              overlayColor: WidgetStateProperty.all(
+                                Colors.black.withValues(alpha: 0.02),
+                              ),
+
+                              shadowColor: WidgetStateProperty.all(
+                                Colors.transparent,
+                              ),
+
+                              foregroundColor: WidgetStateProperty.all(
+                                const Color(0xFF0B4D2B),
+                              ),
+                            ),
+
                             icon: const Icon(Icons.edit),
 
-                            label: const Text("Editar"),
+                            label: const Text(
+                              "Editar",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),
@@ -238,7 +256,6 @@ class ResumoPedidoPage extends StatelessWidget {
 
                   decoration: BoxDecoration(
                     color: Colors.white,
-
                     borderRadius: BorderRadius.circular(20),
                   ),
 
@@ -246,19 +263,26 @@ class ResumoPedidoPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-                      Text(
-                        cliente.tipoEntrega == "retirada"
-                            ? "Retirada"
-                            : "Entrega",
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                        style: const TextStyle(
-                          fontSize: 20,
+                        children: [
+                          Text(
+                            cliente.tipoEntrega == "retirada"
+                                ? "Retirada"
+                                : "Entrega",
 
-                          fontWeight: FontWeight.bold,
-                        ),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          const SizedBox(width: 80),
+                        ],
                       ),
 
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 20),
 
                       Text(
                         cliente.tipoEntrega == "retirada"
@@ -293,12 +317,30 @@ class ResumoPedidoPage extends StatelessWidget {
                       );
                     },
 
+                    style: ButtonStyle(
+                      overlayColor: WidgetStateProperty.all(
+                        Colors.black.withValues(alpha: 0.02),
+                      ),
+
+                      shadowColor: WidgetStateProperty.all(Colors.transparent),
+
+                      side: WidgetStateProperty.all(
+                        const BorderSide(color: Color(0xFF0B4D2B)),
+                      ),
+
+                      foregroundColor: WidgetStateProperty.all(
+                        const Color(0xFF0B4D2B),
+                      ),
+                    ),
+
                     icon: const Icon(Icons.pix),
 
-                    label: const Text("Copiar chave PIX"),
+                    label: const Text(
+                      "Copiar chave PIX",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-
                 const SizedBox(height: 18),
 
                 // ==========================
@@ -328,34 +370,148 @@ class ResumoPedidoPage extends StatelessWidget {
                                 context: context,
 
                                 builder: (_) => AlertDialog(
-                                  title: const Text("Pedido enviado"),
-
-                                  content: const Text(
-                                    "Seu pedido foi enviado com sucesso.",
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
 
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(
-                                          context,
-                                        ).pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                            builder: (_) => const FirstPage(),
+                                  contentPadding: const EdgeInsets.all(30),
+
+                                  content: SizedBox(
+                                    width: 500,
+
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+
+                                      children: [
+                                        Container(
+                                          width: 100,
+                                          height: 100,
+
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFF0B4D2B),
+                                                Color(0xFF2E6B47),
+                                              ],
+                                            ),
                                           ),
 
-                                          (route) => false,
-                                        );
-                                      },
+                                          child: const Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                            size: 70,
+                                          ),
+                                        ),
 
-                                      child: const Text("OK"),
+                                        const SizedBox(height: 30),
+
+                                        const Text(
+                                          "Pedido Confirmado!",
+
+                                          textAlign: TextAlign.center,
+
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 30),
+
+                                        Container(
+                                          padding: const EdgeInsets.all(20),
+
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+
+                                            border: Border.all(
+                                              color: const Color(0xFFDEE7E1),
+                                            ),
+                                          ),
+
+                                          child: const Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 24,
+                                                backgroundColor: Color(
+                                                  0xFFF2EFEC,
+                                                ),
+
+                                                child: Icon(
+                                                  Icons.mail_outline,
+                                                  color: Color(0xFF0B4D2B),
+                                                ),
+                                              ),
+
+                                              SizedBox(width: 16),
+
+                                              Expanded(
+                                                child: Text(
+                                                  "Confirmação enviada por e-mail para a gráfica.",
+
+                                                  textAlign: TextAlign.center,
+
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Color(0xFF46655A),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 30),
+
+                                        SizedBox(
+                                          width: double.infinity,
+                                          height: 50,
+
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(
+                                                context,
+                                              ).pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      const FirstPage(),
+                                                ),
+                                                (route) => false,
+                                              );
+                                            },
+
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(
+                                                0xFF0B4D2B,
+                                              ),
+
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                            ),
+
+                                            child: const Text(
+                                              "OK",
+
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               );
                             }
                           },
-
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF0B4D2B),
 
@@ -381,7 +537,7 @@ class ResumoPedidoPage extends StatelessWidget {
                       "Enviar Pedido",
 
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
 
                         fontWeight: FontWeight.bold,
 
