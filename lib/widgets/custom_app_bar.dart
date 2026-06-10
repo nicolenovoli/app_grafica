@@ -186,7 +186,7 @@ class CustomAppBar extends StatelessWidget {
 
       decoration: BoxDecoration(
         color: ativo
-            ? const Color(0xFF0B4D2B).withOpacity(0.12)
+            ? const Color(0xFF0B4D2B).withValues(alpha: 0.12)
             : Colors.transparent,
 
         borderRadius: BorderRadius.circular(12),
