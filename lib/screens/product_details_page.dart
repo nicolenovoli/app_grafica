@@ -108,7 +108,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-
                   // IMAGEM
                   Stack(
                     children: [
@@ -287,7 +286,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           );
                         }),
 
-                        // QUANTIDADE 
+                        // QUANTIDADE
                         const Text(
                           "Quantidade",
 

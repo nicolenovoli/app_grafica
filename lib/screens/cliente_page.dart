@@ -17,10 +17,7 @@ class ClientePage extends StatefulWidget {
 class _ClientePageState extends State<ClientePage> {
   final _formKey = GlobalKey<FormState>();
 
-  // =====================================
   // CONTROLLERS
-  // =====================================
-
   final telefoneController = TextEditingController();
 
   final nomeController = TextEditingController();
@@ -107,9 +104,7 @@ class _ClientePageState extends State<ClientePage> {
                       children: [
                         const SizedBox(height: 35),
 
-                        // =====================================
                         // TELEFONE
-                        // =====================================
                         _tituloCampo("TELEFONE *"),
 
                         const SizedBox(height: 10),
@@ -226,8 +221,7 @@ class _ClientePageState extends State<ClientePage> {
                                       titulo: "Perfil Não Encontrado!",
                                       subtitulo:
                                           "Complete os dados para criar um novo perfil",
-                                          icon: Icons.error_outline,
-                                          iconColor: Colors.orange,
+                                      icon: Icons.error_outline,
                                     );
                                   }
                                 },
@@ -243,9 +237,7 @@ class _ClientePageState extends State<ClientePage> {
 
                         const SizedBox(height: 28),
 
-                        // =====================================
                         // NOME
-                        // =====================================
                         _tituloCampo("NOME *"),
 
                         const SizedBox(height: 10),
@@ -266,9 +258,7 @@ class _ClientePageState extends State<ClientePage> {
 
                         const SizedBox(height: 28),
 
-                        // =====================================
                         // EMAIL
-                        // =====================================
                         _tituloCampo("E-MAIL (OPCIONAL)"),
 
                         const SizedBox(height: 10),
@@ -281,9 +271,7 @@ class _ClientePageState extends State<ClientePage> {
 
                         const SizedBox(height: 35),
 
-                        // =====================================
                         // ENTREGA
-                        // =====================================
                         _tituloCampo("TIPO DE PEDIDO *"),
 
                         const SizedBox(height: 14),
@@ -332,9 +320,7 @@ class _ClientePageState extends State<ClientePage> {
 
                         const SizedBox(height: 35),
 
-                        // =====================================
                         // ENDEREÇO
-                        // =====================================
                         if (tipoEntrega == "entrega") ...[
                           _tituloCampo("ENDEREÇO DE ENTREGA *"),
 
@@ -471,9 +457,7 @@ class _ClientePageState extends State<ClientePage> {
                           const SizedBox(height: 40),
                         ],
 
-                        // =====================================
                         // BOTÃO
-                        // =====================================
                         SizedBox(
                           width: double.infinity,
 
@@ -497,25 +481,44 @@ CEP: ${cepController.text}
 
 """;
 
-                              bool sucesso = await clienteProvider
-                                  .cadastrarCliente(
-                                    ClienteModel(
-                                      nome: nomeController.text,
+                              final telefone = telefoneController.text
+                                  .replaceAll(RegExp(r'[^0-9]'), '');
 
-                                      telefone: telefoneController.text
-                                          .replaceAll(RegExp(r'[^0-9]'), ''),
+                              bool sucesso = false;
 
-                                      email: emailController.text.isEmpty
-                                          ? null
-                                          : emailController.text,
+                              if (clienteProvider.cliente != null) {
+                                clienteProvider.atualizarCliente(
+                                  ClienteModel(
+                                    id: clienteProvider.cliente!.id,
+                                    nome: nomeController.text,
+                                    telefone: telefone,
+                                    email: emailController.text.isEmpty
+                                        ? null
+                                        : emailController.text,
+                                    tipoEntrega: tipoEntrega,
+                                    endereco: tipoEntrega == "entrega"
+                                        ? enderecoCompleto
+                                        : null,
+                                  ),
+                                );
 
-                                      tipoEntrega: tipoEntrega,
-
-                                      endereco: tipoEntrega == "entrega"
-                                          ? enderecoCompleto
-                                          : null,
-                                    ),
-                                  );
+                                sucesso = true;
+                              } else {
+                                sucesso = await clienteProvider
+                                    .cadastrarCliente(
+                                      ClienteModel(
+                                        nome: nomeController.text,
+                                        telefone: telefone,
+                                        email: emailController.text.isEmpty
+                                            ? null
+                                            : emailController.text,
+                                        tipoEntrega: tipoEntrega,
+                                        endereco: tipoEntrega == "entrega"
+                                            ? enderecoCompleto
+                                            : null,
+                                      ),
+                                    );
+                              }
 
                               if (!context.mounted) {
                                 return;
@@ -533,7 +536,6 @@ CEP: ${cepController.text}
 
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF0B4D2B),
-
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -545,12 +547,9 @@ CEP: ${cepController.text}
                                   )
                                 : const Text(
                                     "CONTINUAR",
-
                                     style: TextStyle(
                                       fontSize: 16,
-
                                       fontWeight: FontWeight.bold,
-
                                       color: Colors.white,
                                     ),
                                   ),

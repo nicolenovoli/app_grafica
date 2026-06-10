@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/providers/cliente_provider.dart';
+import 'package:flutter_application_1/screens/first_page.dart';
 import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 
 import 'package:provider/provider.dart';
@@ -44,8 +45,31 @@ class _OrdersPageState extends State<OrdersPage> {
     });
   }
 
+  Future<void> _verificarClienteLogado() async {
+    final clienteProvider = context.read<ClienteProvider>();
+
+    if (clienteProvider.cliente == null) {
+      return;
+    }
+
+    telefoneController.text = clienteProvider.cliente!.telefone;
+
+    await buscarPedidos();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _verificarClienteLogado();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final clienteProvider = context.watch<ClienteProvider>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -78,7 +102,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
                   const SizedBox(height: 30),
 
-                  !pesquisou
+                  clienteProvider.cliente == null && !pesquisou
                       ? _buildIdentificacao()
                       : carregando
                       ? const Center(
@@ -219,10 +243,11 @@ class _OrdersPageState extends State<OrdersPage> {
         onTap: () {
           context.read<ClienteProvider>().limparCliente();
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const OrdersPage()),
-          );
+          setState(() {
+            pesquisou = false;
+            pedidos.clear();
+            telefoneController.clear();
+          });
         },
         child: const Text(
           'Trocar',
@@ -325,7 +350,10 @@ class _OrdersPageState extends State<OrdersPage> {
 
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const FirstPage()),
+                  );
                 },
 
                 style: ElevatedButton.styleFrom(

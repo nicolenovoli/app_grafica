@@ -1,15 +1,9 @@
 class ItemPedidoModel {
-
   final int produtoId;
 
-  // =====================================
-  // NOVOS CAMPOS
-  // =====================================
-
   final String nomeProduto;
-  final String imagemProduto;
 
-  // =====================================
+  final String imagemProduto;
 
   final int quantidade;
 
@@ -20,17 +14,11 @@ class ItemPedidoModel {
   final String observacoes;
 
   ItemPedidoModel({
-
     required this.produtoId,
 
-    // =====================================
-    // NOVOS CAMPOS
-    // =====================================
-
     required this.nomeProduto,
-    required this.imagemProduto,
 
-    // =====================================
+    required this.imagemProduto,
 
     required this.quantidade,
 
@@ -41,51 +29,37 @@ class ItemPedidoModel {
     required this.observacoes,
   });
 
-  factory ItemPedidoModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
-
+  factory ItemPedidoModel.fromJson(Map<String, dynamic> json) {
     return ItemPedidoModel(
-
       produtoId: json["produto_id"],
 
-      // =====================================
-      // NOVOS CAMPOS
-      // =====================================
+      nomeProduto: json["nome_produto"] ?? "",
 
-      nomeProduto:
-          json["nome_produto"] ?? "",
-
-          imagemProduto: json["imagem_produto"] ?? "",
-
-      // =====================================
+      imagemProduto: json["imagem_produto"] ?? "",
 
       quantidade: json["quantidade"],
 
-      valorUnitario:
-          json["valor_unitario"].toDouble(),
+      valorUnitario: json["valor_unitario"].toDouble(),
 
-      subtotal:
-          json["subtotal"].toDouble(),
+      subtotal: json["subtotal"].toDouble(),
 
-      observacoes:
-          json["observacoes"] ?? "",
+      observacoes: json["observacoes"] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() {
-  return {
-    "produto_id": produtoId,
+    return {
+      "produto_id": produtoId,
 
-    "nome_produto": nomeProduto,
+      "nome_produto": nomeProduto,
 
-    "quantidade": quantidade,
+      "quantidade": quantidade,
 
-    "valor_unitario": valorUnitario,
+      "valor_unitario": valorUnitario,
 
-    "subtotal": subtotal,
+      "subtotal": subtotal,
 
-    "observacoes": observacoes,
-  };
-}
+      "observacoes": observacoes,
+    };
+  }
 }

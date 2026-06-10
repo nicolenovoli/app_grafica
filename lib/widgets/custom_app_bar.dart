@@ -23,9 +23,7 @@ class CustomAppBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // =====================================
           // LOGO
-          // =====================================
           ClipRRect(
             borderRadius: BorderRadius.circular(18),
             child: Image.asset(
@@ -38,9 +36,7 @@ class CustomAppBar extends StatelessWidget {
 
           SizedBox(width: celular ? 10 : 18),
 
-          // =====================================
           // TEXTO
-          // =====================================
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,9 +78,7 @@ class CustomAppBar extends StatelessWidget {
             ),
           ),
 
-          // =====================================
           // MENU
-          // =====================================
           Row(
             children: [
               // CATÁLOGO
@@ -143,9 +137,7 @@ class CustomAppBar extends StatelessWidget {
 
               SizedBox(width: celular ? 10 : 30),
 
-              // =====================================
               // CARRINHO
-              // =====================================
               GestureDetector(
                 onTap: () {
                   Navigator.push(

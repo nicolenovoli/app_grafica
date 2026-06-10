@@ -26,10 +26,7 @@ class ProdutoModel {
     required this.opcoes,
   });
 
-  // =====================================
   // IMAGEM LOCAL
-  // =====================================
-
   String get imagem {
 
     switch (nome.toLowerCase()) {

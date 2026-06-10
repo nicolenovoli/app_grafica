@@ -7,28 +7,19 @@ import '../widgets/produto_destaque.dart';
 import '../widgets/secao_produtos.dart';
 
 class FirstPage extends StatelessWidget {
-
-  const FirstPage({
-    super.key,
-  });
+  const FirstPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return const Scaffold(
       backgroundColor: Colors.white,
 
       body: SingleChildScrollView(
-
         padding: EdgeInsets.zero,
 
         child: Column(
-
           children: [
-
-            CustomAppBar(
-              paginaAtual: "catalogo",
-            ),
+            CustomAppBar(paginaAtual: "catalogo"),
 
             SizedBox(height: 20),
 

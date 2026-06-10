@@ -46,9 +46,7 @@ class CarrinhoPage extends StatelessWidget {
 
                     const SizedBox(height: 40),
 
-                    // =====================================
                     // CARRINHO VAZIO
-                    // =====================================
                     if (carrinhoProvider.itens.isEmpty)
                       SizedBox(
                         height: 500,
@@ -144,9 +142,7 @@ class CarrinhoPage extends StatelessWidget {
                         ),
                       ),
 
-                    // =====================================
                     // COM ITENS
-                    // =====================================
                     if (carrinhoProvider.itens.isNotEmpty)
                       Column(
                         children: [
