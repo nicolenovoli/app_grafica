@@ -52,9 +52,7 @@ class _OrdersPageState extends State<OrdersPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            const CustomAppBar(
-              paginaAtual: "pedidos",
-            ),
+            const CustomAppBar(paginaAtual: "pedidos"),
 
             Padding(
               padding: const EdgeInsets.fromLTRB(26, 0, 26, 26),
@@ -131,7 +129,7 @@ class _OrdersPageState extends State<OrdersPage> {
         const SizedBox(height: 16),
 
         const Text(
-          "Informe seu telefone para visualizar seu histórico de pedidos.",
+          "Informe seu telefone para visualizar seu histórico de pedidos",
 
           textAlign: TextAlign.center,
 
@@ -178,25 +176,33 @@ class _OrdersPageState extends State<OrdersPage> {
 
             const SizedBox(width: 12),
 
-            GestureDetector(
-              onTap: () async {
-                if (telefoneController.text.length < 15) {
-                  return;
-                }
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
 
-                await buscarPedidos();
-              },
+              child: GestureDetector(
+                onTap: () async {
+                  if (telefoneController.text.length < 15) {
+                    return;
+                  }
 
-              child: Container(
-                width: 60,
-                height: 60,
+                  await buscarPedidos();
+                },
 
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0B4D2B),
-                  borderRadius: BorderRadius.circular(18),
+                child: Container(
+                  width: 60,
+                  height: 60,
+
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0B4D2B),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+
+                  child: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
-
-                child: const Icon(Icons.search, color: Colors.white, size: 30),
               ),
             ),
           ],
@@ -241,7 +247,7 @@ class _OrdersPageState extends State<OrdersPage> {
         const SizedBox(height: 16),
 
         const Text(
-          "Não encontramos pedidos para este telefone.",
+          "Não encontramos pedidos para este telefone",
 
           textAlign: TextAlign.center,
 
@@ -250,14 +256,15 @@ class _OrdersPageState extends State<OrdersPage> {
 
         const SizedBox(height: 40),
 
-        Row(
+        Column(
           children: [
-            Expanded(
+            SizedBox(
+              width: double.infinity,
+
               child: OutlinedButton(
                 onPressed: () {
                   setState(() {
                     pesquisou = false;
-
                     telefoneController.clear();
                   });
                 },
@@ -282,18 +289,18 @@ class _OrdersPageState extends State<OrdersPage> {
 
                   style: TextStyle(
                     color: Color(0xFF0B4D2B),
-
                     fontWeight: FontWeight.bold,
-
                     fontSize: 16,
                   ),
                 ),
               ),
             ),
 
-            const SizedBox(width: 16),
+            const SizedBox(height: 12),
 
-            Expanded(
+            SizedBox(
+              width: double.infinity,
+
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -312,7 +319,11 @@ class _OrdersPageState extends State<OrdersPage> {
                 child: const Text(
                   "Ver catálogo",
 
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),

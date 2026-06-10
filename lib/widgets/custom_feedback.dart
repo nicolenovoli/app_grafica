@@ -5,7 +5,12 @@ class CustomFeedback {
     required BuildContext context,
     required String titulo,
     String? subtitulo,
-    Duration duration = const Duration(seconds: 1),
+
+    IconData icon = Icons.check,
+    Color iconColor = Colors.white,
+    Color iconBackgroundColor = const Color(0xFF0B4D2B),
+
+    Duration duration = const Duration(seconds: 2),
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -24,18 +29,16 @@ class CustomFeedback {
 
         elevation: 4,
 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
 
         content: Row(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 16,
-              backgroundColor: Color(0xFF0B4D2B),
+              backgroundColor: const Color(0xFF0B4D2B),
 
               child: Icon(
-                Icons.check,
+                icon, // <-- usar o parâmetro
                 color: Colors.white,
                 size: 18,
               ),
@@ -63,7 +66,7 @@ class CustomFeedback {
                     const SizedBox(height: 4),
 
                     Text(
-                      subtitulo!,
+                      subtitulo,
 
                       style: const TextStyle(
                         color: Colors.black87,

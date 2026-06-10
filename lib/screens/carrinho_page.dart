@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/first_page.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/carrinho_provider.dart';
@@ -19,9 +20,7 @@ class CarrinhoPage extends StatelessWidget {
 
       body: Column(
         children: [
-          const CustomAppBar(
-            paginaAtual: "carrinho",
-          ),
+          const CustomAppBar(paginaAtual: "carrinho"),
 
           Expanded(
             child: SingleChildScrollView(
@@ -110,7 +109,13 @@ class CarrinhoPage extends StatelessWidget {
 
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const FirstPage(),
+                                      ),
+                                      (route) => false,
+                                    );
                                   },
 
                                   style: ElevatedButton.styleFrom(
@@ -320,43 +325,43 @@ class CarrinhoPage extends StatelessWidget {
                                 const SizedBox(height: 30),
 
                                 SizedBox(
-  width: double.infinity,
+                                  width: double.infinity,
 
-  height: 56,
+                                  height: 56,
 
-  child: ElevatedButton(
-    onPressed: () {
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
 
-      Navigator.push(
-        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ClientePage(),
+                                        ),
+                                      );
+                                    },
 
-        MaterialPageRoute(
-          builder: (context) => const ClientePage(),
-        ),
-      );
-    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF0B4D2B),
 
-    style: ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xFF0B4D2B),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(22),
+                                      ),
+                                    ),
 
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-      ),
-    ),
+                                    child: const Text(
+                                      "Finalizar pedido",
 
-    child: const Text(
-      "Finalizar pedido",
+                                      style: TextStyle(
+                                        fontSize: 16,
 
-      style: TextStyle(
-        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
 
-        fontWeight: FontWeight.bold,
-
-        color: Colors.white,
-      ),
-    ),
-  ),
-),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
 
                                 const SizedBox(height: 10),
 
@@ -368,9 +373,14 @@ class CarrinhoPage extends StatelessWidget {
 
                                   child: OutlinedButton(
                                     onPressed: () {
-                                      Navigator.pop(context);
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const FirstPage(),
+                                        ),
+                                        (route) => false,
+                                      );
                                     },
-
                                     style: ButtonStyle(
                                       overlayColor: WidgetStateProperty.all(
                                         Colors.black.withValues(alpha: 0.02),

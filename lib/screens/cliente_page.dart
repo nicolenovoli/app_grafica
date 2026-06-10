@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
 import '../models/cliente_model.dart';
 import '../providers/cliente_provider.dart';
 import '../screens/resumo_pedido_page.dart';
-import '../widgets/footer_section.dart';
 
 class ClientePage extends StatefulWidget {
   const ClientePage({super.key});
@@ -200,21 +200,13 @@ class _ClientePageState extends State<ClientePage> {
                                         ),
                                       ),
                                     );
-
                                     return;
                                   }
 
                                   bool encontrou = await clienteProvider
-                                      .buscarClientePorTelefone(
-                                        telefoneController.text.replaceAll(
-                                          RegExp(r'[^0-9]'),
-                                          '',
-                                        ),
-                                      );
+                                      .buscarClientePorTelefone(numeros);
 
-                                  if (!context.mounted) {
-                                    return;
-                                  }
+                                  if (!context.mounted) return;
 
                                   // CLIENTE ENCONTRADO
                                   if (encontrou &&
@@ -222,29 +214,26 @@ class _ClientePageState extends State<ClientePage> {
                                     final cliente = clienteProvider.cliente!;
 
                                     nomeController.text = cliente.nome;
-
                                     emailController.text = cliente.email ?? "";
-
                                     tipoEntrega = cliente.tipoEntrega;
 
                                     setState(() {});
-
                                   }
                                   // CLIENTE NÃO ENCONTRADO
                                   else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Perfil não encontrado. Continue preenchendo para cadastrar.",
-                                        ),
-                                      ),
+                                    CustomFeedback.show(
+                                      context: context,
+                                      titulo: "Perfil Não Encontrado!",
+                                      subtitulo:
+                                          "Complete os dados para criar um novo perfil",
+                                          icon: Icons.error_outline,
+                                          iconColor: Colors.orange,
                                     );
                                   }
                                 },
 
                                 icon: const Icon(
                                   Icons.search,
-
                                   color: Colors.white,
                                 ),
                               ),

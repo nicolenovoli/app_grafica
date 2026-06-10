@@ -130,22 +130,26 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
 
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
 
-                            child: Container(
-                              width: 42,
-                              height: 42,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
 
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                              child: Container(
+                                width: 42,
+                                height: 42,
 
-                                borderRadius: BorderRadius.circular(14),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+
+                                child: const Icon(Icons.arrow_back),
                               ),
-
-                              child: const Icon(Icons.arrow_back),
                             ),
                           ),
                         ),
@@ -232,44 +236,50 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       opcoesSelecionadas[entry.key] ==
                                       opcao.nome;
 
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        opcoesSelecionadas[entry.key] =
-                                            opcao.nome;
-                                      });
-                                    },
+                                  return MouseRegion(
+                                    cursor: SystemMouseCursors.click,
 
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 18,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          opcoesSelecionadas[entry.key] =
+                                              opcao.nome;
+                                        });
+                                      },
 
-                                        vertical: 12,
-                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 18,
 
-                                      decoration: BoxDecoration(
-                                        color: ativo
-                                            ? const Color(0xFF0B4D2B)
-                                            : Colors.white,
+                                          vertical: 12,
+                                        ),
 
-                                        borderRadius: BorderRadius.circular(30),
-
-                                        border: Border.all(
+                                        decoration: BoxDecoration(
                                           color: ativo
                                               ? const Color(0xFF0B4D2B)
-                                              : Colors.grey.shade300,
+                                              : Colors.white,
+
+                                          borderRadius: BorderRadius.circular(
+                                            30,
+                                          ),
+
+                                          border: Border.all(
+                                            color: ativo
+                                                ? const Color(0xFF0B4D2B)
+                                                : Colors.grey.shade300,
+                                          ),
                                         ),
-                                      ),
 
-                                      child: Text(
-                                        opcao.nome,
+                                        child: Text(
+                                          opcao.nome,
 
-                                        style: TextStyle(
-                                          color: ativo
-                                              ? Colors.white
-                                              : Colors.black,
+                                          style: TextStyle(
+                                            color: ativo
+                                                ? Colors.white
+                                                : Colors.black,
 
-                                          fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -389,8 +399,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                   CustomFeedback.show(
                     context: context,
-                    titulo: "Adicionado ao carrinho!",
+                    titulo: "Adicionado ao Carrinho!",
                     subtitulo: "1x ${widget.produto.nome}",
+                    icon: Icons.check,
                   );
                 },
 
@@ -422,20 +433,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 
   Widget _botaoQuantidade(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
 
-      child: Container(
-        width: 42,
-        height: 42,
+      child: GestureDetector(
+        onTap: onTap,
 
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
+        child: Container(
+          width: 42,
+          height: 42,
 
-          borderRadius: BorderRadius.circular(30),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+
+            borderRadius: BorderRadius.circular(30),
+          ),
+
+          child: Icon(icon),
         ),
-
-        child: Icon(icon),
       ),
     );
   }

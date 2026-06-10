@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/constants/app_constants.dart';
+import 'package:flutter_application_1/widgets/custom_feedback.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/carrinho_provider.dart';
@@ -311,11 +312,13 @@ class ResumoPedidoPage extends StatelessWidget {
                       if (!context.mounted) {
                         return;
                       }
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Chave PIX copiada")),
-                      );
-                    },
+                      
+                  CustomFeedback.show(
+                    context: context,
+                    titulo: "Chave PIX Copiada!",
+                    icon: Icons.check,      
+                  );
+                },
 
                     style: ButtonStyle(
                       overlayColor: WidgetStateProperty.all(

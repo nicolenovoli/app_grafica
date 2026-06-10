@@ -20,9 +20,7 @@ class FirstPage extends StatelessWidget {
 
       body: SingleChildScrollView(
 
-        padding: EdgeInsets.only(
-          bottom: 120,
-        ),
+        padding: EdgeInsets.zero,
 
         child: Column(
 
