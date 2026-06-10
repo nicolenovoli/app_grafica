@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/providers/cliente_provider.dart';
 import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 
 import 'package:provider/provider.dart';
@@ -97,10 +98,8 @@ class _OrdersPageState extends State<OrdersPage> {
       ),
     );
   }
-  // ==========================================
-  // IDENTIFICAÇÃO
-  // ==========================================
 
+  // IDENTIFICAÇÃO
   Widget _buildIdentificacao() {
     return Column(
       children: [
@@ -211,10 +210,33 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 
-  // ==========================================
-  // SEM PEDIDOS
-  // ==========================================
+  // BOTÃO TROCAR
+  Widget _buildBotaoTrocar() {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
 
+      child: GestureDetector(
+        onTap: () {
+          context.read<ClienteProvider>().limparCliente();
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const OrdersPage()),
+          );
+        },
+        child: const Text(
+          'Trocar',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF0F3D32),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // SEM PEDIDOS
   Widget _buildSemPedidos() {
     return Column(
       children: [
@@ -333,50 +355,130 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 
+  // LISTA DE PEDIDOS
   Widget _buildListaPedidos() {
     return Column(
       children: [
         const SizedBox(height: 20),
 
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                '${pedidos.length} pedidos encontrados',
+                style: const TextStyle(fontSize: 16, color: Color(0xFF66756F)),
+              ),
+            ),
+
+            _buildBotaoTrocar(),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
         ...pedidos.map((pedido) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 16),
-
+            margin: const EdgeInsets.only(bottom: 18),
             padding: const EdgeInsets.all(20),
 
             decoration: BoxDecoration(
               color: Colors.white,
+              borderRadius: BorderRadius.circular(22),
 
-              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFFE2E5E2)),
+
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
                 Text(
-                  pedido.itens.first.nomeProduto,
+                  'PEDIDO #${pedido.id.toString().padLeft(4, '0')}',
                   style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF5B6E67),
                   ),
                 ),
 
-                const SizedBox(height: 12),
+                const SizedBox(height: 4),
 
-                Text("Quantidade: ${pedido.itens.first.quantidade}"),
+                Text(
+                  pedido.dataPedido?.split('T').first ?? '',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Color(0xFF6D7B76),
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                ...pedido.itens.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${item.quantidade}x ${item.nomeProduto}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
+                        if ((item.observacoes).isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 3),
+                            child: Text(
+                              item.observacoes,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Color(0xFF6D7B76),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                }),
 
                 const SizedBox(height: 8),
 
-                Text("Opções: ${pedido.itens.first.observacoes}"),
+                Divider(color: Colors.grey.shade300),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
 
-                Text("Valor: R\$ ${pedido.valorTotal.toStringAsFixed(2)}"),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Entrega • ${pedido.itens.length} ${pedido.itens.length == 1 ? "item" : "itens"}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF66756F),
+                        ),
+                      ),
+                    ),
 
-                const SizedBox(height: 8),
-
-                Text("Data: ${pedido.dataPedido?.split('T').first ?? ''}"),
+                    Text(
+                      'R\$ ${pedido.valorTotal.toStringAsFixed(2).replaceAll(".", ",")}',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0F3D32),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           );
@@ -386,10 +488,7 @@ class _OrdersPageState extends State<OrdersPage> {
   }
 }
 
-// ==========================================
 // FORMATADOR DE TELEFONE
-// ==========================================
-
 class TelefoneInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -398,7 +497,6 @@ class TelefoneInputFormatter extends TextInputFormatter {
   ) {
     String numeros = newValue.text.replaceAll(RegExp(r'\D'), '');
 
-    // CAMPO VAZIO
     if (numeros.isEmpty) {
       return const TextEditingValue(
         text: '',
@@ -408,33 +506,27 @@ class TelefoneInputFormatter extends TextInputFormatter {
 
     String textoFormatado = '';
 
-    // DDD
     textoFormatado += '(';
 
     if (numeros.length >= 2) {
       textoFormatado += numeros.substring(0, 2);
-
       textoFormatado += ') ';
     } else {
       textoFormatado += numeros;
     }
 
-    // Número
     if (numeros.length > 2) {
       if (numeros.length <= 7) {
         textoFormatado += numeros.substring(2);
       } else {
         textoFormatado += numeros.substring(2, 7);
-
         textoFormatado += '-';
-
         textoFormatado += numeros.substring(7);
       }
     }
 
     return TextEditingValue(
       text: textoFormatado,
-
       selection: TextSelection.collapsed(offset: textoFormatado.length),
     );
   }

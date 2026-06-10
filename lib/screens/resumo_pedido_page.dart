@@ -62,9 +62,7 @@ class ResumoPedidoPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                // ==========================
                 // PRODUTOS
-                // ==========================
                 Container(
                   padding: const EdgeInsets.all(24),
 
@@ -165,9 +163,7 @@ class ResumoPedidoPage extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // ==========================
                 // CLIENTE
-                // ==========================
                 Container(
                   padding: const EdgeInsets.all(24),
 
@@ -249,9 +245,7 @@ class ResumoPedidoPage extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // ==========================
                 // ENTREGA
-                // ==========================
                 Container(
                   padding: const EdgeInsets.all(24),
 
@@ -296,9 +290,7 @@ class ResumoPedidoPage extends StatelessWidget {
 
                 const SizedBox(height: 35),
 
-                // ==========================
                 // PIX
-                // ==========================
                 SizedBox(
                   width: double.infinity,
                   height: 58,
@@ -312,13 +304,13 @@ class ResumoPedidoPage extends StatelessWidget {
                       if (!context.mounted) {
                         return;
                       }
-                      
-                  CustomFeedback.show(
-                    context: context,
-                    titulo: "Chave PIX Copiada!",
-                    icon: Icons.check,      
-                  );
-                },
+
+                      CustomFeedback.show(
+                        context: context,
+                        titulo: "Chave PIX Copiada!",
+                        icon: Icons.check,
+                      );
+                    },
 
                     style: ButtonStyle(
                       overlayColor: WidgetStateProperty.all(
@@ -346,9 +338,7 @@ class ResumoPedidoPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 18),
 
-                // ==========================
                 // ENVIAR PEDIDO
-                // ==========================
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -546,6 +536,20 @@ class ResumoPedidoPage extends StatelessWidget {
 
                         color: Colors.white,
                       ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 14),
+
+                const Center(
+                  child: Text(
+                    "Você pode enviar o pedido sem gerar PIX e combinar o pagamento depois.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF66756F),
+                      height: 1.4,
                     ),
                   ),
                 ),

@@ -108,9 +108,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-                  // ======================================
+
                   // IMAGEM
-                  // ======================================
                   Stack(
                     children: [
                       Container(
@@ -157,9 +156,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ],
                   ),
 
-                  // ======================================
                   // CONTEÚDO
-                  // ======================================
                   Padding(
                     padding: const EdgeInsets.all(24),
 
@@ -207,9 +204,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                         const SizedBox(height: 32),
 
-                        // ======================================
                         // OPÇÕES
-                        // ======================================
                         ...opcoesAgrupadas.entries.map((entry) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,9 +287,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           );
                         }),
 
-                        // ======================================
-                        // QUANTIDADE
-                        // ======================================
+                        // QUANTIDADE 
                         const Text(
                           "Quantidade",
 
@@ -365,9 +358,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             ),
           ),
 
-          // ======================================
-          // BOTÃO
-          // ======================================
+          // BOTÃO ADICIONAR AO CARRINHO
           Container(
             padding: const EdgeInsets.all(20),
 
@@ -432,6 +423,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 
+  // BOTÃO DE QUANTIDADE
   Widget _botaoQuantidade(IconData icon, VoidCallback onTap) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
